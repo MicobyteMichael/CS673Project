@@ -1,6 +1,8 @@
 package com.example.healthapp;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,13 +27,27 @@ public class LoginActivityFragmentLogIn extends Fragment {
     }
 
     private String getTextFieldContents(int id) {
-        return ((EditText)getActivity().findViewById(id)).getText().toString();
+        return ((EditText)getActivity().findViewById(id)).getText().toString().trim();
     }
 
     private void onSignInClicked() {
         String email = getTextFieldContents(R.id.logInFragEmail);
-        String password = getTextFieldContents(R.id.logInFragPassword);
+        String pass  = getTextFieldContents(R.id.logInFragPassword);
 
-        System.out.println("sign in: " + email + "|" + password);
+        String error = null;
+
+        if(email == null || email.isEmpty() || pass == null || pass.isEmpty()) {
+            error = "Please fill out all fields.";
+        } else if(pass.length() < 10) {
+            error = "Password is too short!";
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Invalid email address!";
+        }
+
+        if(error == null) {
+            System.out.println("sign in: " + email + "|" + pass);
+        } else {
+            new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
+        }
     }
 }
