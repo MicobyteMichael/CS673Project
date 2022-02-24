@@ -7,41 +7,34 @@
     tools:context=".LoginActivity">
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:src="@drawable/login_background"
-        app:layout_constraintHeight_percent=".35"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-285dp" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/logInActFragHolder"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/white" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="248dp">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-    </androidx.viewpager.widget.ViewPager>
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageview3"
+        android:id="@+id/logInActLogo"
         android:layout_width="110dp"
         android:layout_height="101dp"
+        android:layout_marginTop="48dp"
         android:src="@drawable/logo"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="130dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
