@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         ((Button)findViewById(id)).setOnClickListener(view -> toggleSignInSignUp());
     }
 
-
     @Override
     public void onBackPressed() {}
 }

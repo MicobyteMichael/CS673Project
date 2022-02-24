@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/signUpFragEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
@@ -19,20 +19,21 @@
         app:layout_constraintWidth_percent=".8" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/signUpFragPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:hint="Password"
+        android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/signUpFragPhoneNumber"
         app:layout_constraintWidth_percent=".8" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/signUpFragPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Phone number"
@@ -41,35 +42,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4"
+        app:layout_constraintTop_toBottomOf="@+id/signUpFragEmail"
         app:layout_constraintWidth_percent=".8" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/signUpFragSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="96dp"
         android:text="Sign up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5"
+        app:layout_constraintTop_toBottomOf="@+id/signUpFragConfirmPassword"
         app:layout_constraintWidth_percent=".8" />
 
     <Button
-        android:id="@+id/textView4"
+        android:id="@+id/signUpFragSignIn"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Sign in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpFragSignUp" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="left" />
+
+    <EditText
+        android:id="@+id/signUpFragConfirmPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:paddingLeft="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/signUpFragPassword"
+        app:layout_constraintStart_toStartOf="@+id/signUpFragPassword"
+        app:layout_constraintTop_toBottomOf="@+id/signUpFragPassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
