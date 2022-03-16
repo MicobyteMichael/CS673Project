@@ -15,22 +15,11 @@
  * software and documents. This publication and the contents hereof are subject
  * to change without notice.
  */
+package com.samsung.android.app.stepdiary
 
-buildscript {
+interface StepCountObserver {
 
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
-    }
-}
+    fun onChanged(count: Int)
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+    fun onBinningDataChanged(binningCountList: List<StepBinningData>)
 }

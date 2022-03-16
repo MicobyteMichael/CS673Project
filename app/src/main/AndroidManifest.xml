@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    ~ Copyright (C) 2014 Samsung Electronics Co., Ltd. All rights reserved.
+    ~
+    ~ Mobile Communication Division,
+    ~ Digital Media and Communications Business, Samsung Electronics Co., Ltd.
+    ~
+    ~ This software and its documentation are confidential and proprietary
+    ~ information of Samsung Electronics Co., Ltd.  No part of the software and
+    ~ documents may be copied, reproduced, transmitted, translated, or reduced to
+    ~ any electronic medium or machine-readable form without the prior written
+    ~ consent of Samsung Electronics.
+    ~
+    ~ Samsung Electronics makes no representations with respect to the contents,
+    ~ and assumes no responsibility for any errors that might appear in the
+    ~ software and documents. This publication and the contents hereof are subject
+    ~ to change without notice.
+    -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.healthapp">
+    package="com.samsung.android.app.stepdiary"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <queries>
+        <package android:name="com.sec.android.app.shealth" />
+    </queries>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.HealthApp">
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.samsung.android.health.permission.read"
+            android:value="com.samsung.health.step_count;com.samsung.shealth.step_daily_trend" />
+
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".StepDiaryActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
