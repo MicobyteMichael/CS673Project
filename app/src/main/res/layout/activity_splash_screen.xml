@@ -10,7 +10,7 @@
         android:id="@+id/splashScreenActLogo"
         android:layout_width="110dp"
         android:layout_height="101dp"
-        android:src="@drawable/logo"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
