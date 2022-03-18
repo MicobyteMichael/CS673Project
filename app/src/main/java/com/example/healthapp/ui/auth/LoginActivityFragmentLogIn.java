@@ -1,4 +1,4 @@
-package com.example.healthapp;
+package com.example.healthapp.ui.auth;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.healthapp.R;
 
 public class LoginActivityFragmentLogIn extends Fragment {
 

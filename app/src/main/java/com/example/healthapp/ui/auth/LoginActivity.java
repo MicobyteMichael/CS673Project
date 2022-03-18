@@ -1,10 +1,12 @@
-package com.example.healthapp;
+package com.example.healthapp.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.example.healthapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 

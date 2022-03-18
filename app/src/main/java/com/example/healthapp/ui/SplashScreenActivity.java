@@ -1,4 +1,4 @@
-package com.example.healthapp;
+package com.example.healthapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
+import com.example.healthapp.R;
+import com.example.healthapp.ui.auth.LoginActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
