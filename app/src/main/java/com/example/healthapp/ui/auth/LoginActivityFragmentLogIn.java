@@ -13,6 +13,7 @@ import com.example.healthapp.R;
 import com.example.healthapp.backend.auth.RESTTaskSignIn;
 import com.example.healthapp.ui.MainActivity;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 public class LoginActivityFragmentLogIn extends Fragment {
@@ -45,7 +46,7 @@ public class LoginActivityFragmentLogIn extends Fragment {
         if(user.isEmpty() || pass.isEmpty()) {
             errHandler.accept("Please fill out all fields.");
         } else {
-            RESTTaskSignIn.enqueue(user, pass,
+            RESTTaskSignIn.enqueue(user.toLowerCase(Locale.ROOT), pass,
                 () -> startActivity(new Intent(getActivity(), MainActivity.class)),
                 () -> errHandler.accept("Invalid credentials, please try again.")
             );

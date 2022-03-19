@@ -14,6 +14,7 @@ import com.example.healthapp.R;
 import com.example.healthapp.backend.auth.RESTTaskRegister;
 import com.example.healthapp.ui.MainActivity;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 public class LoginActivityFragmentSignUp extends Fragment {
@@ -60,7 +61,7 @@ public class LoginActivityFragmentSignUp extends Fragment {
             String phoneFiltered = "";
             for(char ch : phone.toCharArray()) if(Character.isDigit(ch)) phoneFiltered += ch;
 
-            RESTTaskRegister.enqueue(user, pass, email, phone,
+            RESTTaskRegister.enqueue(user.toLowerCase(Locale.ROOT), pass, email.toLowerCase(Locale.ROOT), phoneFiltered,
                 () -> startActivity(new Intent(getActivity(), MainActivity.class)),
                 failedReason -> errHandler.accept(failedReason == null ? "API failure" : failedReason)
             );

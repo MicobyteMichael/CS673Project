@@ -73,7 +73,7 @@ public class RESTClient implements Runnable {
                 act.runOnUiThread(() -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(act);
                     builder.setTitle("Working...");
-                    builder.setMessage(task.toString());
+                    builder.setMessage(task.getMessage());
                     builder.setView(new ProgressBar(act));
 
                     msgbox[0] = builder.create();
@@ -84,7 +84,7 @@ public class RESTClient implements Runnable {
                     Object result = runTaskNow(task);
                     act.runOnUiThread(() -> onComplete.accept(result));
                 } catch(Exception e) {
-                    System.err.println("Failed to run REST task \"" + task + "\"!");
+                    System.err.println("Failed to run REST task \"" + task + "\" (message: \"" + task.getMessage() + "\")!");
                     e.printStackTrace();
 
                     act.runOnUiThread(onFailed);

@@ -37,6 +37,7 @@ public class RESTTaskRegister implements RESTTask<Object[]> {
 
     @Override public String getMethod() { return "POST"; }
     @Override public String getEndpoint() { return "register"; }
+    @Override public String getMessage() { return "Registering..."; }
 
     @Override
     public JSONObject getParameters() throws JSONException {

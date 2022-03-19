@@ -11,6 +11,7 @@ public interface RESTTask<ReturnType> {
 
     public abstract String getMethod();
     public abstract String getEndpoint();
+    public abstract String getMessage();
     public abstract JSONObject getParameters() throws JSONException;
     public abstract ReturnType process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException;
 }

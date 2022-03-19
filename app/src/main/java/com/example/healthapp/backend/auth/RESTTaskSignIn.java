@@ -32,7 +32,7 @@ public class RESTTaskSignIn implements RESTTask<Boolean> {
 
     @Override public String getMethod() { return "POST"; }
     @Override public String getEndpoint() { return "login"; }
-    @Override public String toString() { return "Logging in..."; }
+    @Override public String getMessage() { return "Logging in..."; }
 
     @Override
     public JSONObject getParameters() throws JSONException {

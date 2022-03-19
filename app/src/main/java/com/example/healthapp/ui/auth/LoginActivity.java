@@ -25,15 +25,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void toggleSignInSignUp() {
-        Class<? extends Fragment> frag = isOnLogInPage ? LoginActivityFragmentSignUp.class : LoginActivityFragmentLogIn.class;
-        isOnLogInPage = !isOnLogInPage;
-
+    public void showFragment(Class<? extends Fragment> frag) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.logInActFragHolder, frag, null)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void toggleSignInSignUp() {
+        showFragment(isOnLogInPage ? LoginActivityFragmentSignUp.class : LoginActivityFragmentLogIn.class);
+        isOnLogInPage = !isOnLogInPage;
     }
 
     public void assignButtonToToggle(int id) {
