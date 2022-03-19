@@ -1,6 +1,7 @@
 package com.example.healthapp.ui.auth;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.example.healthapp.R;
+import com.example.healthapp.backend.auth.RESTTaskRegister;
+import com.example.healthapp.ui.MainActivity;
+
+import java.util.function.Consumer;
 
 public class LoginActivityFragmentSignUp extends Fragment {
 
@@ -28,19 +33,23 @@ public class LoginActivityFragmentSignUp extends Fragment {
     }
 
     private void onSignUpClicked() {
+        String user  = getTextFieldContents(R.id.signUpFragUsername       );
         String email = getTextFieldContents(R.id.signUpFragEmail          );
         String phone = getTextFieldContents(R.id.signUpFragPhoneNumber    );
         String pass  = getTextFieldContents(R.id.signUpFragPassword       );
         String pass2 = getTextFieldContents(R.id.signUpFragConfirmPassword);
 
+        Consumer<String> errHandler = error -> new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
         String error = null;
 
-        if(email == null || email.isEmpty() || phone == null || phone.isEmpty() || pass == null || pass.isEmpty() || pass2 == null || pass2.isEmpty()) {
+        if(user.isEmpty() || email.isEmpty() || phone.isEmpty() || pass.isEmpty() || pass2.isEmpty()) {
             error = "Please fill out all fields.";
         } else if(!pass.equals(pass2)) {
             error = "Passwords don't match!";
         } else if(pass.length() < 10) {
             error = "Password is too short!";
+        } else if(user.length() < 10) {
+            error = "Username is too short!";
         } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             error = "Invalid email address!";
         } else if(!Patterns.PHONE.matcher(phone).matches()) {
@@ -51,9 +60,12 @@ public class LoginActivityFragmentSignUp extends Fragment {
             String phoneFiltered = "";
             for(char ch : phone.toCharArray()) if(Character.isDigit(ch)) phoneFiltered += ch;
 
-            System.out.println("sign up: " + email + "|" + phoneFiltered + "|" + pass);
+            RESTTaskRegister.enqueue(user, pass, email, phone,
+                () -> startActivity(new Intent(getActivity(), MainActivity.class)),
+                failedReason -> errHandler.accept(failedReason == null ? "API failure" : failedReason)
+            );
         } else {
-            new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
+            errHandler.accept(error);
         }
     }
 }

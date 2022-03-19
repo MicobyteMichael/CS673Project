@@ -3,7 +3,6 @@ package com.example.healthapp.ui.auth;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,10 +42,13 @@ public class LoginActivityFragmentLogIn extends Fragment {
 
         Consumer<String> errHandler = error -> new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
 
-        if(user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
+        if(user.isEmpty() || pass.isEmpty()) {
             errHandler.accept("Please fill out all fields.");
         } else {
-            RESTTaskSignIn.enqueue(user, pass, () -> { startActivity(new Intent(getActivity(), MainActivity.class)); }, () -> errHandler.accept("Invalid credentials, please try again."));
+            RESTTaskSignIn.enqueue(user, pass,
+                () -> startActivity(new Intent(getActivity(), MainActivity.class)),
+                () -> errHandler.accept("Invalid credentials, please try again.")
+            );
         }
     }
 }
