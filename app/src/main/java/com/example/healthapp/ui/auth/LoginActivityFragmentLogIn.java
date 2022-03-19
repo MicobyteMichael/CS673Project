@@ -1,6 +1,7 @@
 package com.example.healthapp.ui.auth;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.example.healthapp.R;
+import com.example.healthapp.backend.auth.RESTTaskSignIn;
+import com.example.healthapp.ui.MainActivity;
+
+import java.util.function.Consumer;
 
 public class LoginActivityFragmentLogIn extends Fragment {
 
@@ -33,23 +38,15 @@ public class LoginActivityFragmentLogIn extends Fragment {
     }
 
     private void onSignInClicked() {
-        String email = getTextFieldContents(R.id.logInFragEmail);
+        String user = getTextFieldContents(R.id.logInFragUsername);
         String pass  = getTextFieldContents(R.id.logInFragPassword);
 
-        String error = null;
+        Consumer<String> errHandler = error -> new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
 
-        if(email == null || email.isEmpty() || pass == null || pass.isEmpty()) {
-            error = "Please fill out all fields.";
-        } else if(pass.length() < 10) {
-            error = "Password is too short!";
-        } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            error = "Invalid email address!";
-        }
-
-        if(error == null) {
-            System.out.println("sign in: " + email + "|" + pass);
+        if(user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
+            errHandler.accept("Please fill out all fields.");
         } else {
-            new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
+            RESTTaskSignIn.enqueue(user, pass, () -> { startActivity(new Intent(getActivity(), MainActivity.class)); }, () -> errHandler.accept("Invalid credentials, please try again."));
         }
     }
 }
