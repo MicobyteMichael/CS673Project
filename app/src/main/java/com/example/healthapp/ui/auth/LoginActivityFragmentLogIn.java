@@ -30,7 +30,7 @@ public class LoginActivityFragmentLogIn extends Fragment {
     }
 
     private void onForgotPasswordClicked() {
-        System.out.println("forgot password");
+        ((LoginActivity)getActivity()).showFragment(LoginActivityFragmentResetPassword.class);
     }
 
     private String getTextFieldContents(int id) {
