@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URL;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedTransferQueue;
 import java.util.function.Consumer;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -63,18 +65,18 @@ public class RESTClient implements Runnable {
             }
 
             if(taskStuff != null) {
-                RESTTask<?> task = (RESTTask<?>)taskStuff[0];
+                RESTTask<?> task                    = (RESTTask<?>)taskStuff[0];
                 Consumer<? super Object> onComplete = (Consumer<? super Object>)taskStuff[1];
-                Runnable onFailed = (Runnable)   taskStuff[2];
+                Runnable onFailed                   = (Runnable)   taskStuff[2];
 
                 AlertDialog[] msgbox = new AlertDialog[1];
-                Activity act = HealthApplication.getInstance().getCurrentActivity();
+                WeakReference<Activity> act = HealthApplication.getInstance().getCurrentActivity();
 
-                act.runOnUiThread(() -> {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(act);
+                act.get().runOnUiThread(() -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(act.get());
                     builder.setTitle("Working...");
                     builder.setMessage(task.getMessage());
-                    builder.setView(new ProgressBar(act));
+                    builder.setView(new ProgressBar(act.get()));
 
                     msgbox[0] = builder.create();
                     msgbox[0].show();
@@ -82,12 +84,12 @@ public class RESTClient implements Runnable {
 
                 try {
                     Object result = runTaskNow(task);
-                    act.runOnUiThread(() -> onComplete.accept(result));
+                    act.get().runOnUiThread(() -> onComplete.accept(result));
                 } catch(Exception e) {
                     System.err.println("Failed to run REST task \"" + task + "\" (message: \"" + task.getMessage() + "\")!");
                     e.printStackTrace();
 
-                    act.runOnUiThread(onFailed);
+                    act.get().runOnUiThread(onFailed);
                 }
 
                 msgbox[0].dismiss();
@@ -105,7 +107,11 @@ public class RESTClient implements Runnable {
 
         connection.setRequestMethod(task.getMethod());
         connection.setRequestProperty("Content-Type", "application/json; utf-8");
-        connection.getOutputStream().write(task.getParameters().toString().getBytes(StandardCharsets.UTF_8));
+
+        JSONObject params = task.getParameters();
+        if(params != null) {
+            connection.getOutputStream().write(params.toString().getBytes(StandardCharsets.UTF_8));
+        }
 
         Map<String, List<String>> headers = connection.getHeaderFields();
         int code = connection.getResponseCode();

@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="Account">
+        <EditTextPreference
+            app:key="username"
+            app:title="Username"
+            app:useSimpleSummaryProvider="true" />
 
-    <PreferenceCategory app:title="Messages">
+        <EditTextPreference
+            app:key="email"
+            app:title="Email Address"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="phone"
+            app:title="Phone Number"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <!-- <PreferenceCategory app:title="Messages">
 
         <EditTextPreference
             app:key="signature"
@@ -31,6 +47,6 @@
             app:summaryOn="Automatically download attachments for incoming emails"
             app:title="Download incoming attachments" />
 
-    </PreferenceCategory>
+    </PreferenceCategory> -->
 
 </PreferenceScreen>

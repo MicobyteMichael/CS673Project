@@ -9,7 +9,9 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.healthapp.HealthApplication;
 import com.example.healthapp.R;
+import com.example.healthapp.backend.auth.AuthDataValidator;
 import com.example.healthapp.backend.auth.RESTTaskSignIn;
 import com.example.healthapp.ui.MainActivity;
 
@@ -41,15 +43,9 @@ public class LoginActivityFragmentLogIn extends Fragment {
         String user = getTextFieldContents(R.id.logInFragUsername);
         String pass  = getTextFieldContents(R.id.logInFragPassword);
 
-        Consumer<String> errHandler = error -> new AlertDialog.Builder(getContext()).setNeutralButton("Ok", null).setMessage(error).show();
-
-        if(user.isEmpty() || pass.isEmpty()) {
-            errHandler.accept("Please fill out all fields.");
-        } else {
-            RESTTaskSignIn.enqueue(user.toLowerCase(Locale.ROOT), pass,
-                () -> startActivity(new Intent(getActivity(), MainActivity.class)),
-                () -> errHandler.accept("Invalid credentials, please try again.")
-            );
-        }
+        RESTTaskSignIn.enqueue(user, pass,
+            ()  -> startActivity(new Intent(getActivity(), MainActivity.class)),
+            err -> new AlertDialog.Builder(getActivity()).setMessage(err).setNeutralButton("OK", null).show()
+        );
     }
 }

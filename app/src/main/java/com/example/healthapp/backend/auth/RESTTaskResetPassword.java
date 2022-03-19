@@ -16,13 +16,19 @@ public class RESTTaskResetPassword implements RESTTask<Boolean> {
 
     private final String username, email, phone, newPass;
 
-    public static void enqueue(String username, String email, String phone, String newPass, Runnable onSuccess, Runnable onFailed) {
-        Consumer<Boolean> onSuccessProxy = success -> {
-            if(success) onSuccess.run();
-            else onFailed.run();
-        };
+    public static void enqueue(String username, String email, String phone, String newPass, String newPass2, Runnable onSuccess, Consumer<String> onFailed) {
+        String error = AuthDataValidator.validate(username, email, phone, newPass, newPass2);
 
-        HealthApplication.getInstance().getAPIClient().<Boolean>submitTask(new RESTTaskResetPassword(username, email, phone, newPass), onSuccessProxy, onFailed);
+        if(error == null) {
+            Consumer<Boolean> onSuccessProxy = success -> {
+                if (success) onSuccess.run();
+                else onFailed.accept("No account found with the specified username, email, and phone number.");
+            };
+
+            HealthApplication.getInstance().getAPIClient().<Boolean>submitTask(new RESTTaskResetPassword(username, email, phone, newPass), onSuccessProxy, () -> onFailed.accept("API Failure"));
+        } else {
+            onFailed.accept(error);
+        }
     }
 
     public RESTTaskResetPassword(String username, String email, String phone, String newPass) {
@@ -38,7 +44,11 @@ public class RESTTaskResetPassword implements RESTTask<Boolean> {
 
     @Override
     public JSONObject getParameters() throws JSONException {
-        return new JSONObject().accumulate("username", username).accumulate("email", email).accumulate("phone", phone).accumulate("newPass", newPass);
+        return new JSONObject()
+            .accumulate("username", AuthDataValidator.stripUsername(username))
+            .accumulate("email",    AuthDataValidator.stripEmail(email))
+            .accumulate("phone",    AuthDataValidator.stripPhone(phone))
+            .accumulate("newPass",  newPass);
     }
 
     @Override

@@ -16,16 +16,22 @@ public class RESTTaskRegister implements RESTTask<Object[]> {
 
     private final String username, password, email, phone;
 
-    public static void enqueue(String username, String password, String email, String phone, Runnable onSuccess, Consumer<String> onFailed) {
-        Consumer<Object[]> onSuccessProxy = createdAndReason -> {
-            boolean created = (boolean)createdAndReason[0];
-            String reason = (String)createdAndReason[1];
+    public static void enqueue(String username, String password, String password2, String email, String phone, Runnable onSuccess, Consumer<String> onFailed) {
+        String error = AuthDataValidator.validate(username, email, phone, password, password2);
 
-            if(created) onSuccess.run();
-            else onFailed.accept(reason);
-        };
+        if(error == null) {
+            Consumer<Object[]> onSuccessProxy = createdAndReason -> {
+                boolean created = (boolean) createdAndReason[0];
+                String reason = (String) createdAndReason[1];
 
-        HealthApplication.getInstance().getAPIClient().<Object[]>submitTask(new RESTTaskRegister(username, password, email, phone), onSuccessProxy, () -> onFailed.accept(null));
+                if (created) onSuccess.run();
+                else onFailed.accept(reason);
+            };
+
+            HealthApplication.getInstance().getAPIClient().<Object[]>submitTask(new RESTTaskRegister(username, password, email, phone), onSuccessProxy, () -> onFailed.accept("API failure"));
+        } else {
+            onFailed.accept(error);
+        }
     }
 
     public RESTTaskRegister(String username, String password, String email, String phone) {
@@ -41,7 +47,11 @@ public class RESTTaskRegister implements RESTTask<Object[]> {
 
     @Override
     public JSONObject getParameters() throws JSONException {
-        return new JSONObject().accumulate("username", username).accumulate("password", password).accumulate("email", email).accumulate("phone", phone);
+        return new JSONObject()
+            .accumulate("username", AuthDataValidator.stripUsername(username))
+            .accumulate("password", password)
+            .accumulate("email",    AuthDataValidator.stripEmail(email))
+            .accumulate("phone",    AuthDataValidator.stripPhone(phone));
     }
 
     @Override

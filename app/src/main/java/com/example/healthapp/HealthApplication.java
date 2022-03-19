@@ -43,7 +43,7 @@ public class HealthApplication extends Application {
         });
     }
 
-    public Activity getCurrentActivity() { return currActivity.get(); }
+    public WeakReference<Activity> getCurrentActivity() { return currActivity; }
     public RESTClient getAPIClient() { return apiConnection; }
 
     public static HealthApplication getInstance() {
