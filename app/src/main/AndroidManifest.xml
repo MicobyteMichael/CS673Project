@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.healthapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".HealthApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Health App"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HealthApp"
-        android:name=".HealthApplication" >
+        android:theme="@style/Theme.HealthApp">
         <activity
             android:name=".ui.SplashScreenActivity"
             android:exported="true">
@@ -27,5 +29,4 @@
             android:exported="false" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -43,9 +43,7 @@ public class HealthApplication extends Application {
         });
     }
 
-    public Activity getCurrentActivity() {
-        return currActivity.get();
-    }
+    public Activity getCurrentActivity() { return currActivity.get(); }
     public RESTClient getAPIClient() { return apiConnection; }
 
     public static HealthApplication getInstance() {
