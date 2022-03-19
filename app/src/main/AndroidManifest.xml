@@ -8,7 +8,8 @@
         android:label="Health App"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HealthApp">
+        android:theme="@style/Theme.HealthApp"
+        android:name=".HealthApplication" >
         <activity
             android:name=".ui.SplashScreenActivity"
             android:exported="true">
