@@ -15,6 +15,11 @@
             app:key="phone"
             app:title="Phone Number"
             app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="password"
+            app:title="Password"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <!-- <PreferenceCategory app:title="Messages">
