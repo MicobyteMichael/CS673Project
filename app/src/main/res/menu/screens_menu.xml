@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@layout/home_screen_fragment"
-            android:title="Home Screen"
-            android:checked="true" />
-        <item
-            android:id="@xml/root_preferences"
-            android:title="Account Settings" />
-    </group>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Screens">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@layout/home_screen_fragment"
+                    android:title="Home Screen"
+                    android:checked="true" />
+                <item
+                    android:id="@xml/root_preferences"
+                    android:title="Account Settings" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Controls">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/logOutButton"
+                    android:title="Log Out" />
+            </group>
+        </menu>
+    </item>
 </menu>

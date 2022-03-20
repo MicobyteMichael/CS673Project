@@ -7,11 +7,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.example.healthapp.HealthApplication;
 import com.example.healthapp.R;
+import com.example.healthapp.backend.RESTClient;
+import com.example.healthapp.ui.auth.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -20,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout theDrawer;
     private ActionBarDrawerToggle drawerToggle;
+
     private HashMap<Integer, Class<? extends Fragment>> screenIDMap = new HashMap<>();
+    private HashMap<Integer, Runnable> buttonFunctionMap = new HashMap<>();
 
     public MainActivity() {
         super(R.layout.activity_main);
@@ -29,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     {
         screenIDMap.put(R.layout.home_screen_fragment, HomeScreenFragment.class);
         screenIDMap.put(R.xml.root_preferences, AccountSettingsFragment.class);
+
+        buttonFunctionMap.put(R.id.logOutButton, this::logOut);
     }
 
     @Override
@@ -46,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         theDrawer.addDrawerListener(drawerToggle);
 
         NavigationView theNav = (NavigationView)findViewById(R.id.nvView);
-        selectScreen(theNav.getMenu().getItem(0));
+        selectScreen(theNav.getMenu().findItem(R.layout.home_screen_fragment));
         theNav.setNavigationItemSelectedListener(
             new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -54,22 +63,33 @@ public class MainActivity extends AppCompatActivity {
                     selectScreen(menuItem);
                     return true;
                 }
-            });
+            }
+        );
+    }
+
+    private void logOut() {
+        RESTClient.clearCookies();
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void selectScreen(MenuItem menuItem) {
-        Class<? extends Fragment> frag = screenIDMap.getOrDefault(menuItem.getItemId(), null);
+        int id = menuItem.getItemId();
+        Class<? extends Fragment> frag = screenIDMap.getOrDefault(id, null);
 
-        if(frag != null) {
+        if(frag == null) {
+            Runnable action = buttonFunctionMap.getOrDefault(id, null);
+            if(action != null) action.run();
+        } else {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.flContent, frag, null)
                     .addToBackStack(null)
                     .commit();
+
+            menuItem.setChecked(true);
+            setTitle(menuItem.getTitle());
         }
 
-        menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
         theDrawer.closeDrawers();
     }
 

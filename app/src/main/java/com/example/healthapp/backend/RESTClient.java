@@ -34,8 +34,14 @@ public class RESTClient implements Runnable {
     private final String baseURL;
     private Queue<Object[]> pendingTasks = new ArrayDeque<>();
 
+    private static final CookieManager cookies = new CookieManager();
+
     static {
-        CookieHandler.setDefault(new CookieManager());
+        CookieHandler.setDefault(cookies);
+    }
+
+    public static void clearCookies() {
+        cookies.getCookieStore().removeAll();
     }
 
     public RESTClient(String baseURL) {
@@ -92,7 +98,7 @@ public class RESTClient implements Runnable {
                     act.get().runOnUiThread(onFailed);
                 }
 
-                msgbox[0].dismiss();
+                if(msgbox[0] != null) msgbox[0].dismiss();
             }
 
             try {
