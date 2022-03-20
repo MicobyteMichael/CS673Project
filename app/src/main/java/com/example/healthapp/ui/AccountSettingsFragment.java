@@ -17,13 +17,15 @@ import java.util.function.Consumer;
 
 public class AccountSettingsFragment extends PreferenceFragmentCompat {
 
-    private EditTextPreference username, email, phone;
+    private final String DEFAULT_HIDDEN_PASSWORD_TEXT = "Change this if desired";
+    private EditTextPreference username, password, email, phone;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
         username = getPreferenceManager().<EditTextPreference>findPreference("username");
+        password = getPreferenceManager().<EditTextPreference>findPreference("password");
         email = getPreferenceManager().<EditTextPreference>findPreference("email");
         phone = getPreferenceManager().<EditTextPreference>findPreference("phone");
 
@@ -31,6 +33,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if(argPos == 3 && DEFAULT_HIDDEN_PASSWORD_TEXT.equals(newValue)) {
+                        return false;
+                    }
+
                     String[] params = { null, null, null, null };
                     params[argPos] = (String)newValue;
 
@@ -43,7 +49,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                             alertCreator
                         );
 
-                        return true;
+                        return argPos != 3;
                     } else {
                         alertCreator.accept(error);
                         return false;
@@ -51,9 +57,10 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
                 }
             };
 
-        username.setOnPreferenceChangeListener(changeListenerFactory.apply("Username", 0));
-        email.setOnPreferenceChangeListener(changeListenerFactory.apply("Email", 1));
-        phone.setOnPreferenceChangeListener(changeListenerFactory.apply("Phone number", 2));
+        username.setOnPreferenceChangeListener(changeListenerFactory.apply("Username",     0));
+        password.setOnPreferenceChangeListener(changeListenerFactory.apply("Password",     3));
+        email   .setOnPreferenceChangeListener(changeListenerFactory.apply("Email",        1));
+        phone   .setOnPreferenceChangeListener(changeListenerFactory.apply("Phone number", 2));
 
         RESTTaskGetUserInfo.enqueue(
             data -> {
@@ -67,5 +74,7 @@ public class AccountSettingsFragment extends PreferenceFragmentCompat {
             },
             () -> new AlertDialog.Builder(getActivity()).setNeutralButton("Ok", null).setMessage("Failed to download user preferences!").show()
         );
+
+        password.setText(DEFAULT_HIDDEN_PASSWORD_TEXT);
     }
 }
