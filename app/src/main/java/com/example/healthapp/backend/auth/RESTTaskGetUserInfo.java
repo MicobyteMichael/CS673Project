@@ -36,7 +36,7 @@ public class RESTTaskGetUserInfo implements RESTTask<String[]> {
                 String email = json.getString("email");
                 String phone = json.getString("phone");
 
-                return new String[]{ username, email, phone };
+                return new String[] { username, email, phone };
             }
         }
 

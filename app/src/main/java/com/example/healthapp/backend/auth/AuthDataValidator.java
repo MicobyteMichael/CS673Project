@@ -7,7 +7,7 @@ import java.util.Locale;
 public interface AuthDataValidator {
 
     public static String validate(String user, String email, String phone, String pass, String pass2) {
-        if(!checkUsername(user))                          return "Username too short!";
+        if(user  != null && !checkUsername(user))         return "Username too short!";
         if(email != null && !checkEmail(email))           return "Invalid email address!";
         if(phone != null && !checkPhone(phone))           return "Invalid phone number!";
         if(pass  != null && !checkPassword(pass))         return "Password too short!";
