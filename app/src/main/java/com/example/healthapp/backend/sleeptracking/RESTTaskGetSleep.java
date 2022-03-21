@@ -19,6 +19,10 @@ public class RESTTaskGetSleep implements RESTTask<SleepSession[]> {
 
     private final Date day;
 
+    public static void enqueue(Consumer<SleepSession[]> onSuccess, Consumer<String> onFailure) {
+        enqueue(null, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, Consumer<SleepSession[]> onSuccess, Consumer<String> onFailure) {
         if(day == null) {
             day = Date.from(Instant.now());

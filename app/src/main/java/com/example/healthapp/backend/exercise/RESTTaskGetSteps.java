@@ -1,4 +1,4 @@
-package com.example.healthapp.backend.excersize;
+package com.example.healthapp.backend.exercise;
 
 import com.example.healthapp.HealthApplication;
 import com.example.healthapp.backend.RESTTask;
@@ -17,6 +17,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class RESTTaskGetSteps implements RESTTask<Integer> {
 
     private final Date day;
+
+    public static void enqueue(Consumer<Integer> onSuccess, Consumer<String> onFailure) {
+        enqueue(null, onSuccess, onFailure);
+    }
 
     public static void enqueue(Date day, Consumer<Integer> onSuccess, Consumer<String> onFailure) {
         if(day == null) {

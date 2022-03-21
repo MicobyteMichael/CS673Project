@@ -20,6 +20,10 @@ public class RESTTaskEndSleepSession implements RESTTask<Boolean> {
     private final String name;
     private final Instant endTime;
 
+    public static void enqueue(String name, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, name, null, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, String name, Instant endTime, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) day = Date.from(Instant.now());
         if(endTime == null) endTime = Instant.now();

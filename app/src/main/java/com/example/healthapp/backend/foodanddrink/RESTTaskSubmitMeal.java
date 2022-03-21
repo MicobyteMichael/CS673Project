@@ -19,6 +19,10 @@ public class RESTTaskSubmitMeal implements RESTTask<Boolean> {
     private final Date day;
     private final Meal meal;
 
+    public static void enqueue(Meal meal, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, meal, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, Meal meal, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) {
             day = Date.from(Instant.now());

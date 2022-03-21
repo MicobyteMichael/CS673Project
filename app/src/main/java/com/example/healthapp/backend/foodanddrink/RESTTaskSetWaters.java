@@ -19,6 +19,10 @@ public class RESTTaskSetWaters implements RESTTask<Boolean> {
     private final Date day;
     private final int numGlasses;
 
+    public static void enqueue(int numGlasses, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, numGlasses, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, int numGlasses, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) {
             day = Date.from(Instant.now());

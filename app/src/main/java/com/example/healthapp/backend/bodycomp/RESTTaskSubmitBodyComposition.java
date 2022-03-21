@@ -19,6 +19,10 @@ public class RESTTaskSubmitBodyComposition implements RESTTask<Boolean> {
     private final Date day;
     private final BodyComposition comp;
 
+    public static void enqueue(BodyComposition comp, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, comp, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, BodyComposition comp, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) {
             day = Date.from(Instant.now());

@@ -21,6 +21,10 @@ public class RESTTaskStartSleepSession implements RESTTask<Boolean> {
     private final String name;
     private final Instant startTime;
 
+    public static void enqueue(String name, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, name, null, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, String name, Instant startTime, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) day = Date.from(Instant.now());
         if(startTime == null) startTime = Instant.now();

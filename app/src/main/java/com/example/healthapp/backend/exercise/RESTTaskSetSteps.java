@@ -1,4 +1,4 @@
-package com.example.healthapp.backend.excersize;
+package com.example.healthapp.backend.exercise;
 
 import com.example.healthapp.HealthApplication;
 import com.example.healthapp.backend.RESTTask;
@@ -18,6 +18,10 @@ public class RESTTaskSetSteps implements RESTTask<Boolean> {
 
     private final Date day;
     private final int numSteps;
+
+    public static void enqueue(int numSteps, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, numSteps, onSuccess, onFailure);
+    }
 
     public static void enqueue(Date day, int numSteps, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) {

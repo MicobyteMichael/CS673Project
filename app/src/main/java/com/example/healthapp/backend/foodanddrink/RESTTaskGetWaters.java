@@ -18,6 +18,10 @@ public class RESTTaskGetWaters implements RESTTask<Integer> {
 
     private final Date day;
 
+    public static void enqueue(Consumer<Integer> onSuccess, Consumer<String> onFailure) {
+        enqueue(null, onSuccess, onFailure);
+    }
+
     public static void enqueue(Date day, Consumer<Integer> onSuccess, Consumer<String> onFailure) {
         if(day == null) {
             day = Date.from(Instant.now());
