@@ -53,6 +53,7 @@ public class RESTTaskGetExerciseSessions implements RESTTask<ExerciseSession[]> 
                 JSONObject sessionRaw = sessionsRaw.getJSONObject(i);
                 long start = -1, end = -1;
                 int heart = -1, calories = -1;
+                float measuredValue = -1;
 
                 if(sessionRaw.has("start") && sessionRaw.get("start") != JSONObject.NULL) {
                     start = sessionRaw.getLong("start");
@@ -70,7 +71,11 @@ public class RESTTaskGetExerciseSessions implements RESTTask<ExerciseSession[]> 
                     calories = sessionRaw.getInt("calories");
                 }
 
-                sessions[i] = new ExerciseSession(sessionRaw.getString("name"), sessionRaw.getString("type"), start, end, heart, calories);
+                if(sessionRaw.has("parameter") && sessionRaw.get("parameter") != JSONObject.NULL) {
+                    measuredValue = sessionRaw.getInt("parameter");
+                }
+
+                sessions[i] = new ExerciseSession(sessionRaw.getString("name"), ExerciseType.valueOf(sessionRaw.getString("type")), start, end, heart, calories, measuredValue);
             }
 
             return sessions;

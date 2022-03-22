@@ -20,12 +20,13 @@ public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
     private final String name;
     private final Instant endTime;
     private final int averageHeartRate, caloriesBurned;
+    private final float measuredValue;
 
-    public static void enqueue(String name, int averageHeartRate, int caloriesBurned, Runnable onSuccess, Consumer<String> onFailure) {
-        enqueue(null, name, null, averageHeartRate, caloriesBurned, onSuccess, onFailure);
+    public static void enqueue(String name, int averageHeartRate, int caloriesBurned, float measuredValue, Runnable onSuccess, Consumer<String> onFailure) {
+        enqueue(null, name, null, averageHeartRate, caloriesBurned, measuredValue, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, Runnable onSuccess, Consumer<String> onFailure) {
+    public static void enqueue(Date day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, float measuredValue, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) day = Date.from(Instant.now());
         if(endTime == null) endTime = Instant.now();
 
@@ -34,10 +35,10 @@ public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
           else onFailure.accept("API failure again");
         };
 
-        HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskEndExerciseSession(day, name, endTime, averageHeartRate, caloriesBurned), onSuccessProxy, () -> onFailure.accept("API failure"));
+        HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskEndExerciseSession(day, name, endTime, averageHeartRate, caloriesBurned, measuredValue), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskEndExerciseSession(Date day, String name, Instant endTime, int averageHeartRate, int caloriesBurned) { this.day = day; this.name = name; this.endTime = endTime; this.averageHeartRate = averageHeartRate; this.caloriesBurned = caloriesBurned; }
+    public RESTTaskEndExerciseSession(Date day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, float measuredValue) { this.day = day; this.name = name; this.endTime = endTime; this.averageHeartRate = averageHeartRate; this.caloriesBurned = caloriesBurned; this.measuredValue = measuredValue; }
 
     @Override public String getMethod() { return "PATCH"; }
     @Override public String getEndpoint() { return "exercise"; }
@@ -50,7 +51,8 @@ public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
             .accumulate("name",      name)
             .accumulate("end",       endTime.getEpochSecond())
             .accumulate("heartrate", averageHeartRate)
-            .accumulate("calories",  caloriesBurned);
+            .accumulate("calories",  caloriesBurned)
+            .accumulate("parameter", measuredValue);
     }
 
     @Override
