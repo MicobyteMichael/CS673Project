@@ -17,14 +17,15 @@ import javax.net.ssl.HttpsURLConnection;
 public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
 
     private final Date day;
-    private final String name, exerciseType;
+    private final String name;
+    private final ExerciseType exerciseType;
     private final Instant startTime;
 
-    public static void enqueue(String name, String exerciseType, Runnable onSuccess, Consumer<String> onFailure) {
+    public static void enqueue(String name, ExerciseType exerciseType, Runnable onSuccess, Consumer<String> onFailure) {
         enqueue(null, name, null, exerciseType, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, String name, Instant startTime, String exerciseType, Runnable onSuccess, Consumer<String> onFailure) {
+    public static void enqueue(Date day, String name, Instant startTime, ExerciseType exerciseType, Runnable onSuccess, Consumer<String> onFailure) {
         if(day == null) day = Date.from(Instant.now());
         if(startTime == null) startTime = Instant.now();
 
@@ -36,7 +37,7 @@ public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskStartExerciseSession(day, name, startTime, exerciseType), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskStartExerciseSession(Date day, String name, Instant startTime, String exerciseType) { this.day = day; this.name = name; this.startTime = startTime; this.exerciseType = exerciseType; }
+    public RESTTaskStartExerciseSession(Date day, String name, Instant startTime, ExerciseType exerciseType) { this.day = day; this.name = name; this.startTime = startTime; this.exerciseType = exerciseType; }
 
     @Override public String getMethod() { return "PUT"; }
     @Override public String getEndpoint() { return "exercise"; }
@@ -47,7 +48,7 @@ public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
             .accumulate("year",  day.getYear() + 1900)
             .accumulate("day",   day.getDay()).accumulate("name", name)
             .accumulate("start", startTime.getEpochSecond())
-            .accumulate("type",  exerciseType);
+            .accumulate("type",  exerciseType.name());
     }
 
     @Override

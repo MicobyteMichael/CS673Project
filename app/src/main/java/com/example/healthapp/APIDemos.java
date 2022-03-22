@@ -103,7 +103,7 @@ public class APIDemos {
             }
 
             String exName = "test exercise " + System.currentTimeMillis();
-            RESTTaskStartExerciseSession.enqueue(exName, "Jogging", () -> {
+            RESTTaskStartExerciseSession.enqueue(exName, ExerciseType.Jogging, () -> {
                 System.out.println("Submitted start!!");
 
                 RESTTaskGetExerciseSessions.enqueue(exers2 -> {
@@ -112,7 +112,7 @@ public class APIDemos {
                         System.out.println("Exercise session \"" + s.getName() + "\": started at " + s.getStart() + ", ended at " + s.getEnd() + ", exercise type is " + s.getExerciseType() + ", burned " + s.getCaloriesBurned() + " calories, with an average heart rate of " + s.getAverageHeartRate());
                     }
 
-                    RESTTaskEndExerciseSession.enqueue(exName, 50, 150, () -> {
+                    RESTTaskEndExerciseSession.enqueue(exName, 50, 150, 1, () -> {
                         System.out.println("Submitted end!!");
 
                         RESTTaskGetExerciseSessions.enqueue(exers3 -> {
