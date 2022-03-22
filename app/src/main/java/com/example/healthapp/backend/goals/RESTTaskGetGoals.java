@@ -35,7 +35,7 @@ public class RESTTaskGetGoals implements RESTTask<Goal[]> {
     @Override
     public Goal[] process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {
         if(responseCode == HttpsURLConnection.HTTP_OK) {
-            JSONArray goalsRaw = json.getJSONArray("meals");
+            JSONArray goalsRaw = json.getJSONArray("goals");
             ArrayList<Goal> goals = new ArrayList<>();
 
             for(int i = 0; i < goalsRaw.length(); i++) {
