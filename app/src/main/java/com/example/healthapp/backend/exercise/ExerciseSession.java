@@ -48,4 +48,20 @@ public class ExerciseSession {
         if(end != null) return end.getEpochSecond();
         else return -1;
     }
+
+    public String getDescription() {
+        Instant start = getStart(), end = getEnd();
+        String desc = "Started at: " + start.toString();
+
+        if(end != null) {
+            desc += ", Ended at: " + end.toString();
+            desc += ", Duration: " + getDuration().toString();
+            desc += ", Calories: " + getCaloriesBurned();
+            desc += ", Ave. Heart Rate: " + getAverageHeartRate();
+        } else {
+            desc += ", Ongoing";
+        }
+
+        return desc;
+    }
 }

@@ -13,6 +13,9 @@
                 <item
                     android:id="@xml/root_preferences"
                     android:title="Account Settings" />
+                <item
+                    android:id="@layout/fragment_exercise_list"
+                    android:title="Exercise Sessions" />
             </group>
         </menu>
     </item>

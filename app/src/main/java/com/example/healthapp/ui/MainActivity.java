@@ -17,6 +17,7 @@ import com.example.healthapp.HealthApplication;
 import com.example.healthapp.R;
 import com.example.healthapp.backend.RESTClient;
 import com.example.healthapp.ui.auth.LoginActivity;
+import com.example.healthapp.ui.exercise.ExerciseFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -34,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     {
-        screenIDMap.put(R.layout.home_screen_fragment, HomeScreenFragment.class);
-        screenIDMap.put(R.xml.root_preferences, AccountSettingsFragment.class);
+        screenIDMap.put(R.layout.home_screen_fragment,   HomeScreenFragment.class);
+        screenIDMap.put(R.xml.root_preferences,          AccountSettingsFragment.class);
+        screenIDMap.put(R.layout.fragment_exercise_list, ExerciseFragment.class);
 
         buttonFunctionMap.put(R.id.logOutButton, this::logOut);
     }
