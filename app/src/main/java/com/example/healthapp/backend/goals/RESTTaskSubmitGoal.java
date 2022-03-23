@@ -38,6 +38,7 @@ public class RESTTaskSubmitGoal implements RESTTask<Boolean> {
         return new JSONObject()
             .accumulate("name", goal.getName())
             .accumulate("type", goal.getGoalType())
+            .accumulate("comp", goal.getGoalComparison())
             .accumulate("thresh", goal.getThreshold())
             .accumulate("param", goal.getGoalParameter())
             .accumulate("active", goal.isActive());

@@ -9,12 +9,16 @@ import java.util.function.Consumer;
 public class CaloriesConsumedGoal extends Goal {
     public static final String TYPE = "Calories Consumed";
 
+    public static Goal create(String name, int calories, boolean minOrMax) {
+        return new CaloriesConsumedGoal(name, calories, true, minOrMax ? Goal.COMP_MINIMUM : Goal.COMP_MAXIMUM, null);
+    }
+
     public static void register() { /* Call the static { ... } block below */ }
     static { Goal.registerGoalType(TYPE, CaloriesConsumedGoal.class); }
 
     private final String comparison;
 
-    public CaloriesConsumedGoal(String name, int numCalories, boolean active, String comparison, String parameter) { super(name, numCalories, active); this.comparison = comparison; }
+    public CaloriesConsumedGoal(String name, float numCalories, boolean active, String comparison, String parameter) { super(name, numCalories, active); this.comparison = comparison; }
     @Override public String getGoalType() { return TYPE; }
     @Override public String getGoalComparison() { return comparison; }
     @Override public String getGoalParameter() { return null; }

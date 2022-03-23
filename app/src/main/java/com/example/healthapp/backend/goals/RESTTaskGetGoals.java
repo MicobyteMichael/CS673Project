@@ -40,7 +40,13 @@ public class RESTTaskGetGoals implements RESTTask<Goal[]> {
 
             for(int i = 0; i < goalsRaw.length(); i++) {
                 JSONObject goalRaw = goalsRaw.getJSONObject(i);
-                Goal g = Goal.parseGoal(goalRaw.getString("name"), goalRaw.getString("type"), goalRaw.getString("comp"), goalRaw.getInt("thresh"), goalRaw.getString("param"), goalRaw.getBoolean("active"));
+
+                String param = null;
+                if(goalRaw.has("param") && goalRaw.get("param") != JSONObject.NULL) {
+                    param = goalRaw.getString("param");
+                }
+
+                Goal g = Goal.parseGoal(goalRaw.getString("name"), goalRaw.getString("type"), goalRaw.getString("comp"), (float)goalRaw.getDouble("thresh"), param, goalRaw.getBoolean("active"));
 
                 if(g != null) goals.add(g);
             }

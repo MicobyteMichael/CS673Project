@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 public abstract class Goal {
-    public static final String COMP_MINIMUM = "at least";
-    public static final String COMP_MAXIMUM = "at most";
+    public static final String COMP_MINIMUM = "At least";
+    public static final String COMP_MAXIMUM = "At most";
 
     private static HashMap<String, Class<? extends Goal>> registeredGoalTypes = new HashMap<>();
     public static void registerGoalType(String type, Class<? extends Goal> goalClass) { registeredGoalTypes.put(type, goalClass); }
@@ -21,7 +21,7 @@ public abstract class Goal {
         WatersConsumedGoal        .register();
     }
 
-    public static Goal parseGoal(String name, String goalType, String goalComparison, int threshold, String parameter, boolean active) {
+    public static Goal parseGoal(String name, String goalType, String goalComparison, float threshold, String parameter, boolean active) {
         registerDefaultGoalTypes();
 
         for(String registeredType : registeredGoalTypes.keySet()) {
@@ -60,7 +60,8 @@ public abstract class Goal {
         if(param == null) param = "";
         else param += " ";
 
-        return getGoalComparison() + " " + getThreshold() + " " + param + "(" + getGoalType() + " per day)"; }
+        return getGoalComparison() + " " + getThreshold() + " " + param + getGoalType();
+    }
 
     public abstract String getGoalType();
     public abstract String getGoalComparison();

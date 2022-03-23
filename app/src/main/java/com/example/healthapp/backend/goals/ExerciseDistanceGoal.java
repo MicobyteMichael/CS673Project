@@ -9,12 +9,16 @@ import java.util.function.Consumer;
 public class ExerciseDistanceGoal extends Goal {
     public static final String TYPE = "Perform Exercise";
 
+    public static Goal create(String name, float distance, ExerciseType filter) {
+        return new ExerciseDistanceGoal(name, distance, true, null, filter.name());
+    }
+
     private final ExerciseType exerciseType;
 
     public static void register() { /* Call the static { ... } block below */ }
     static { Goal.registerGoalType(TYPE, ExerciseDistanceGoal.class); }
 
-    public ExerciseDistanceGoal(String name, int numCalories, boolean active, String comparison, String parameter) { super(name, numCalories, active); exerciseType = ExerciseType.valueOf(parameter); }
+    public ExerciseDistanceGoal(String name, float distance, boolean active, String comparison, String parameter) { super(name, distance, active); exerciseType = ExerciseType.valueOf(parameter); }
     @Override public String getGoalType() { return TYPE; }
     @Override public String getGoalComparison() { return Goal.COMP_MINIMUM; }
     @Override public String getGoalParameter() { return exerciseType.name(); }

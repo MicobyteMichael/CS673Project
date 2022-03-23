@@ -5,7 +5,12 @@ import com.example.healthapp.backend.exercise.RESTTaskGetSteps;
 import java.util.function.Consumer;
 
 public class StepsGoal extends Goal {
-    public static final String TYPE = "Steps Walked";
+    public static final String TYPE = "Walking";
+
+    public static Goal create(String name, int numStepsOrMiles, boolean miles) {
+        StepGoalType type = miles ? StepGoalType.Miles : StepGoalType.Steps;
+        return new StepsGoal(name, numStepsOrMiles, true, null, type.name());
+    }
 
     public static enum StepGoalType {
         // Stride length info: https://livehealthy.chron.com/average-walking-stride-length-7494.html and https://www.chparks.com/411/How-To-Measure-Steps
@@ -21,7 +26,7 @@ public class StepsGoal extends Goal {
     public static void register() { /* Call the static { ... } block below */ }
     static { Goal.registerGoalType(TYPE, StepsGoal.class); }
 
-    public StepsGoal(String name, int numSteps, boolean active, String comparison, String stepsOrDistance) {
+    public StepsGoal(String name, float numSteps, boolean active, String comparison, String stepsOrDistance) {
         super(name, numSteps, active);
         type = StepGoalType.valueOf(stepsOrDistance);
     }

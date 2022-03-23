@@ -1,6 +1,7 @@
 package com.example.healthapp.backend.goals;
 
 import com.example.healthapp.backend.exercise.ExerciseSession;
+import com.example.healthapp.backend.exercise.ExerciseType;
 import com.example.healthapp.backend.exercise.RESTTaskGetExerciseSessions;
 
 import java.util.function.Consumer;
@@ -8,10 +9,14 @@ import java.util.function.Consumer;
 public class ExerciseCaloriesBurnedGoal extends Goal {
     public static final String TYPE = "Calories Burned";
 
+    public static Goal create(String name, int calories) {
+        return new ExerciseCaloriesBurnedGoal(name, calories, true, null, null);
+    }
+
     public static void register() { /* Call the static { ... } block below */ }
     static { Goal.registerGoalType(TYPE, ExerciseCaloriesBurnedGoal.class); }
 
-    public ExerciseCaloriesBurnedGoal(String name, int numCalories, boolean active, String comparison, String parameter) { super(name, numCalories, active); }
+    public ExerciseCaloriesBurnedGoal(String name, float numCalories, boolean active, String comparison, String parameter) { super(name, numCalories, active); }
     @Override public String getGoalType() { return TYPE; }
     @Override public String getGoalComparison() { return Goal.COMP_MINIMUM; }
     @Override public String getGoalParameter() { return null; }
