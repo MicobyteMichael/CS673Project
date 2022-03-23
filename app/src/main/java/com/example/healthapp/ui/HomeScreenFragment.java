@@ -28,5 +28,6 @@ public class HomeScreenFragment extends Fragment {
         //APIDemos.bodyCompositionTrackingAPIDemo(msgGenerator);
         //APIDemos.stepTrackingAPIDemo(msgGenerator);
         //APIDemos.exerciseSessionTrackingDemo(msgGenerator);
+        //APIDemos.goalTrackingDemo(msgGenerator);
     }
 }

@@ -3,8 +3,10 @@ package com.example.healthapp;
 import com.example.healthapp.backend.bodycomp.*;
 import com.example.healthapp.backend.exercise.*;
 import com.example.healthapp.backend.foodanddrink.*;
+import com.example.healthapp.backend.goals.*;
 import com.example.healthapp.backend.sleeptracking.*;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class APIDemos {
@@ -125,5 +127,34 @@ public class APIDemos {
                 }, msgGenerator);
             }, msgGenerator);
         }, msgGenerator);
+    }
+
+    public static void goalTrackingDemo(Consumer<String> msgGenerator) {
+        ArrayList<Goal> go = new ArrayList<>();
+        go.add(StepsGoal.create("main steps goal " + System.currentTimeMillis(), 5000, false));
+        go.add(WatersConsumedGoal.create("waters goal " + System.currentTimeMillis(), 10));
+        go.add(ExerciseDurationGoal.create("exercise duration " + System.currentTimeMillis(), 0.5F, null));
+        go.add(ExerciseDistanceGoal.create("exercise distance " + System.currentTimeMillis(), 10, ExerciseType.Jogging));
+        go.add(ExerciseCaloriesBurnedGoal.create("exercise calories burned " + System.currentTimeMillis(), 500));
+        go.add(CaloriesConsumedGoal.create("don't eat too much goal " + System.currentTimeMillis(), 1600, false));
+
+        for(Goal goal : go) {
+            String cl = goal.getClass().toString();
+            System.out.println("Testing " + cl);
+
+            RESTTaskGetGoals.enqueue(goals -> {
+                System.out.println(cl + ": Found " + goals.length + " goal(s)!");
+                for(Goal g : goals) System.out.println(cl + ": " + g.getDescription());
+
+                RESTTaskSubmitGoal.enqueue(goal, () -> {
+                    System.out.println(cl + ": Submitted!!");
+
+                    RESTTaskGetGoals.enqueue(goals2 -> {
+                        System.out.println(cl + ": Found " + goals2.length + " goal(s)!");
+                        for(Goal g : goals2) System.out.println(cl + ": " + g.getDescription());
+                    }, msgGenerator);
+                }, msgGenerator);
+            }, msgGenerator);
+        }
     }
 }
