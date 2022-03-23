@@ -17,6 +17,7 @@ import com.example.healthapp.HealthApplication;
 import com.example.healthapp.R;
 import com.example.healthapp.backend.RESTClient;
 import com.example.healthapp.ui.auth.LoginActivity;
+import com.example.healthapp.ui.bodycomp.BodyCompositionFragment;
 import com.example.healthapp.ui.exercise.ExerciseFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,9 +36,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     {
-        screenIDMap.put(R.layout.home_screen_fragment,   HomeScreenFragment.class);
-        screenIDMap.put(R.xml.root_preferences,          AccountSettingsFragment.class);
-        screenIDMap.put(R.layout.fragment_exercise_list, ExerciseFragment.class);
+        screenIDMap.put(R.layout.home_screen_fragment,    HomeScreenFragment.class);
+        screenIDMap.put(R.xml   .root_preferences,        AccountSettingsFragment.class);
+        screenIDMap.put(R.layout.fragment_exercise_list,  ExerciseFragment.class);
+        screenIDMap.put(R.layout.fragment_body_comp_list, BodyCompositionFragment.class);
 
         buttonFunctionMap.put(R.id.logOutButton, this::logOut);
     }
@@ -82,17 +84,20 @@ public class MainActivity extends AppCompatActivity {
             Runnable action = buttonFunctionMap.getOrDefault(id, null);
             if(action != null) action.run();
         } else {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.flContent, frag, null)
-                    .addToBackStack(null)
-                    .commit();
-
+            showFrag(frag);
             menuItem.setChecked(true);
             setTitle(menuItem.getTitle());
         }
 
         theDrawer.closeDrawers();
+    }
+
+    public void showFrag(Class<? extends Fragment> frag) {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.flContent, frag, null)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

@@ -85,9 +85,8 @@ public class APIDemos {
 
                 RESTTaskGetAllBodyCompositions.enqueue(comps -> {
                     System.out.println("Found " + comps.size() + " composition(s) in the history!");
-                    for(LocalDate date : comps.keySet()) {
-                        BodyComposition bc = comps.get(date);
-                        System.out.println(date + " ==>> " + bc.getWeight() + "lbs., " + bc.getBodyFatPercentage() + "% body fat, " + bc.getMuscleWeight() + "lbs. muscle");
+                    for(BodyComposition bc : comps) {
+                        System.out.println(bc.getDateMeasuredOn() + " ==>> " + bc.getWeight() + "lbs., " + bc.getBodyFatPercentage() + "% body fat, " + bc.getMuscleWeight() + "lbs. muscle");
                     }
                 }, msgGenerator);
             }, msgGenerator);

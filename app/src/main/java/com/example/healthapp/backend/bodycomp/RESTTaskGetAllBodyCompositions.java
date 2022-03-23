@@ -7,20 +7,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.Instant;
+import java.sql.Array;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class RESTTaskGetAllBodyCompositions implements RESTTask<Map<LocalDate, BodyComposition>> {
+public class RESTTaskGetAllBodyCompositions implements RESTTask<List<BodyComposition>> {
 
-    public static void enqueue(Consumer<Map<LocalDate, BodyComposition>> onSuccess, Consumer<String> onFailure) {
-        Consumer<Map<LocalDate, BodyComposition>> onSuccessProxy = val -> {
+    public static void enqueue(Consumer<List<BodyComposition>> onSuccess, Consumer<String> onFailure) {
+        Consumer<List<BodyComposition>> onSuccessProxy = val -> {
           if(val == null) onFailure.accept("API failure");
           else onSuccess.accept(val);
         };
@@ -34,14 +33,14 @@ public class RESTTaskGetAllBodyCompositions implements RESTTask<Map<LocalDate, B
     @Override public JSONObject getParameters() throws JSONException { return null; }
 
     @Override
-    public Map<LocalDate, BodyComposition> process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {
+    public List<BodyComposition> process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {
         if(responseCode == HttpsURLConnection.HTTP_OK) {
             JSONArray historyRaw = json.getJSONArray("comp_history");
-            HashMap<LocalDate, BodyComposition> history = new HashMap<>();
+            ArrayList<BodyComposition> history = new ArrayList<>();
 
             for(int i = 0; i < historyRaw.length(); i++) {
                 JSONObject compRaw = historyRaw.getJSONObject(i);
-                history.put(LocalDate.ofYearDay(compRaw.getInt("year"), compRaw.getInt("day")), new BodyComposition(compRaw.getInt("weight"), compRaw.getInt("fatpercentage"), compRaw.getInt("muscle")));
+                history.add(new BodyComposition(compRaw.getInt("weight"), compRaw.getInt("fatpercentage"), compRaw.getInt("muscle"), LocalDate.ofYearDay(compRaw.getInt("year"), compRaw.getInt("day"))));
             }
 
             return history;

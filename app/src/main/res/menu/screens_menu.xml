@@ -16,6 +16,9 @@
                 <item
                     android:id="@layout/fragment_exercise_list"
                     android:title="Exercise Sessions" />
+                <item
+                    android:id="@layout/fragment_body_comp_list"
+                    android:title="Body Composition" />
             </group>
         </menu>
     </item>
