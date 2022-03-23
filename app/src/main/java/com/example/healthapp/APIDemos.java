@@ -137,6 +137,7 @@ public class APIDemos {
         go.add(ExerciseDistanceGoal.create("exercise distance " + System.currentTimeMillis(), 10, ExerciseType.Jogging));
         go.add(ExerciseCaloriesBurnedGoal.create("exercise calories burned " + System.currentTimeMillis(), 500));
         go.add(CaloriesConsumedGoal.create("don't eat too much goal " + System.currentTimeMillis(), 1600, false));
+        go.add(SleepGoal.create("make sure ya get enough sleep " + System.currentTimeMillis(), 6, true));
 
         for(Goal goal : go) {
             String cl = goal.getClass().toString();

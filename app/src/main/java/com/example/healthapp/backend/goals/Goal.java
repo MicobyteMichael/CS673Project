@@ -19,6 +19,7 @@ public abstract class Goal {
         ExerciseDurationGoal      .register();
         CaloriesConsumedGoal      .register();
         WatersConsumedGoal        .register();
+        SleepGoal                 .register();
     }
 
     public static Goal parseGoal(String name, String goalType, String goalComparison, float threshold, String parameter, boolean active) {
