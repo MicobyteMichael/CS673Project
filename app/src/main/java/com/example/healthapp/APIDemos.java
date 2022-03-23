@@ -6,6 +6,7 @@ import com.example.healthapp.backend.foodanddrink.*;
 import com.example.healthapp.backend.goals.*;
 import com.example.healthapp.backend.sleeptracking.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -81,6 +82,14 @@ public class APIDemos {
 
             RESTTaskGetBodyComposition.enqueue(comp2 -> {
                 System.out.println("Body composition: " + comp2.getWeight() + "lbs., " + comp2.getBodyFatPercentage() + "% body fat, " + comp2.getMuscleWeight() + "lbs. muscle");
+
+                RESTTaskGetAllBodyCompositions.enqueue(comps -> {
+                    System.out.println("Found " + comps.size() + " composition(s) in the history!");
+                    for(LocalDate date : comps.keySet()) {
+                        BodyComposition bc = comps.get(date);
+                        System.out.println(date + " ==>> " + bc.getWeight() + "lbs., " + bc.getBodyFatPercentage() + "% body fat, " + bc.getMuscleWeight() + "lbs. muscle");
+                    }
+                }, msgGenerator);
             }, msgGenerator);
         }, msgGenerator);
     }
