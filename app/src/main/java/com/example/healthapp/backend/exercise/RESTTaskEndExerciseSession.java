@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
 
-    private final Date day;
+    private final LocalDate day;
     private final String name;
     private final Instant endTime;
     private final int averageHeartRate, caloriesBurned;
@@ -26,8 +27,8 @@ public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
         enqueue(null, name, null, averageHeartRate, caloriesBurned, measuredValue, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, float measuredValue, Runnable onSuccess, Consumer<String> onFailure) {
-        if(day == null) day = Date.from(Instant.now());
+    public static void enqueue(LocalDate day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, float measuredValue, Runnable onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
         if(endTime == null) endTime = Instant.now();
 
         Consumer<Boolean> onSuccessProxy = val -> {
@@ -38,7 +39,7 @@ public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskEndExerciseSession(day, name, endTime, averageHeartRate, caloriesBurned, measuredValue), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskEndExerciseSession(Date day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, float measuredValue) { this.day = day; this.name = name; this.endTime = endTime; this.averageHeartRate = averageHeartRate; this.caloriesBurned = caloriesBurned; this.measuredValue = measuredValue; }
+    public RESTTaskEndExerciseSession(LocalDate day, String name, Instant endTime, int averageHeartRate, int caloriesBurned, float measuredValue) { this.day = day; this.name = name; this.endTime = endTime; this.averageHeartRate = averageHeartRate; this.caloriesBurned = caloriesBurned; this.measuredValue = measuredValue; }
 
     @Override public String getMethod() { return "PATCH"; }
     @Override public String getEndpoint() { return "exercise"; }
@@ -46,8 +47,8 @@ public class RESTTaskEndExerciseSession implements RESTTask<Boolean> {
 
     @Override public JSONObject getParameters() throws JSONException {
         return new JSONObject()
-            .accumulate("year",      day.getYear() + 1900)
-            .accumulate("day",       day.getDay())
+            .accumulate("year",      day.getYear())
+            .accumulate("day",       day.getDayOfYear())
             .accumulate("name",      name)
             .accumulate("end",       endTime.getEpochSecond())
             .accumulate("heartrate", averageHeartRate)

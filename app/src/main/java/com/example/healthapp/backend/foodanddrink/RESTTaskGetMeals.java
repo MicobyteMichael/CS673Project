@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,16 +18,14 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskGetMeals implements RESTTask<Meal[]> {
 
-    private final Date day;
+    private final LocalDate day;
 
     public static void enqueue(Consumer<Meal[]> onSuccess, Consumer<String> onFailure) {
         enqueue(null, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, Consumer<Meal[]> onSuccess, Consumer<String> onFailure) {
-        if(day == null) {
-            day = Date.from(Instant.now());
-        }
+    public static void enqueue(LocalDate day, Consumer<Meal[]> onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
 
         Consumer<Meal[]> onSuccessProxy = val -> {
           if(val == null) onFailure.accept("API failure");
@@ -36,12 +35,12 @@ public class RESTTaskGetMeals implements RESTTask<Meal[]> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskGetMeals(day), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskGetMeals(Date day) { this.day = day; }
+    public RESTTaskGetMeals(LocalDate day) { this.day = day; }
 
     @Override public String getMethod() { return "POST"; }
     @Override public String getEndpoint() { return "mealintake"; }
     @Override public String getMessage() { return "Getting meal intake..."; }
-    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear() + 1900).accumulate("day", day.getDay()); }
+    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear()).accumulate("day", day.getDayOfYear()); }
 
     @Override
     public Meal[] process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {

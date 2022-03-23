@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,16 +18,14 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskGetExerciseSessions implements RESTTask<ExerciseSession[]> {
 
-    private final Date day;
+    private final LocalDate day;
 
     public static void enqueue(Consumer<ExerciseSession[]> onSuccess, Consumer<String> onFailure) {
         enqueue(null, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, Consumer<ExerciseSession[]> onSuccess, Consumer<String> onFailure) {
-        if(day == null) {
-            day = Date.from(Instant.now());
-        }
+    public static void enqueue(LocalDate day, Consumer<ExerciseSession[]> onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
 
         Consumer<ExerciseSession[]> onSuccessProxy = val -> {
           if(val == null) onFailure.accept("API failure");
@@ -36,12 +35,12 @@ public class RESTTaskGetExerciseSessions implements RESTTask<ExerciseSession[]> 
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskGetExerciseSessions(day), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskGetExerciseSessions(Date day) { this.day = day; }
+    public RESTTaskGetExerciseSessions(LocalDate day) { this.day = day; }
 
     @Override public String getMethod() { return "POST"; }
     @Override public String getEndpoint() { return "exercise"; }
     @Override public String getMessage() { return "Getting exercise sessions..."; }
-    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear() + 1900).accumulate("day", day.getDay()); }
+    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear()).accumulate("day", day.getDayOfYear()); }
 
     @Override
     public ExerciseSession[] process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {

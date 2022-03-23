@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,16 +17,14 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskGetWaters implements RESTTask<Integer> {
 
-    private final Date day;
+    private final LocalDate day;
 
     public static void enqueue(Consumer<Integer> onSuccess, Consumer<String> onFailure) {
         enqueue(null, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, Consumer<Integer> onSuccess, Consumer<String> onFailure) {
-        if(day == null) {
-            day = Date.from(Instant.now());
-        }
+    public static void enqueue(LocalDate day, Consumer<Integer> onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
 
         Consumer<Integer> onSuccessProxy = val -> {
           if(val == -1) onFailure.accept("API failure");
@@ -35,12 +34,12 @@ public class RESTTaskGetWaters implements RESTTask<Integer> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskGetWaters(day), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskGetWaters(Date day) { this.day = day; }
+    public RESTTaskGetWaters(LocalDate day) { this.day = day; }
 
     @Override public String getMethod() { return "POST"; }
     @Override public String getEndpoint() { return "waterintake"; }
     @Override public String getMessage() { return "Getting water intake..."; }
-    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear() + 1900).accumulate("day", day.getDay()); }
+    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear()).accumulate("day", day.getDayOfYear()); }
 
     @Override
     public Integer process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {

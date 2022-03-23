@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
 
-    private final Date day;
+    private final LocalDate day;
     private final String name;
     private final ExerciseType exerciseType;
     private final Instant startTime;
@@ -25,8 +26,8 @@ public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
         enqueue(null, name, null, exerciseType, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, String name, Instant startTime, ExerciseType exerciseType, Runnable onSuccess, Consumer<String> onFailure) {
-        if(day == null) day = Date.from(Instant.now());
+    public static void enqueue(LocalDate day, String name, Instant startTime, ExerciseType exerciseType, Runnable onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
         if(startTime == null) startTime = Instant.now();
 
         Consumer<Boolean> onSuccessProxy = val -> {
@@ -37,7 +38,7 @@ public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskStartExerciseSession(day, name, startTime, exerciseType), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskStartExerciseSession(Date day, String name, Instant startTime, ExerciseType exerciseType) { this.day = day; this.name = name; this.startTime = startTime; this.exerciseType = exerciseType; }
+    public RESTTaskStartExerciseSession(LocalDate day, String name, Instant startTime, ExerciseType exerciseType) { this.day = day; this.name = name; this.startTime = startTime; this.exerciseType = exerciseType; }
 
     @Override public String getMethod() { return "PUT"; }
     @Override public String getEndpoint() { return "exercise"; }
@@ -45,8 +46,9 @@ public class RESTTaskStartExerciseSession implements RESTTask<Boolean> {
 
     @Override public JSONObject getParameters() throws JSONException {
         return new JSONObject()
-            .accumulate("year",  day.getYear() + 1900)
-            .accumulate("day",   day.getDay()).accumulate("name", name)
+            .accumulate("year",  day.getYear())
+            .accumulate("day",   day.getDayOfYear())
+            .accumulate("name", name)
             .accumulate("start", startTime.getEpochSecond())
             .accumulate("type",  exerciseType.name());
     }

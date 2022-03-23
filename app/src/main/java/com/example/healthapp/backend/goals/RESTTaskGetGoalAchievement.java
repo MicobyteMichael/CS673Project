@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,17 +17,15 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskGetGoalAchievement implements RESTTask<Boolean> {
 
-    private final Date day;
+    private final LocalDate day;
     private final String name;
 
     public static void enqueue(String name, Consumer<Boolean> onSuccess, Consumer<String> onFailure) {
         enqueue(null, name, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, String name, Consumer<Boolean> onSuccess, Consumer<String> onFailure) {
-        if(day == null) {
-            day = Date.from(Instant.now());
-        }
+    public static void enqueue(LocalDate day, String name, Consumer<Boolean> onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
 
         Consumer<Boolean> onSuccessProxy = val -> {
             if(val == null) onFailure.accept("API failure again");
@@ -36,12 +35,12 @@ public class RESTTaskGetGoalAchievement implements RESTTask<Boolean> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskGetGoalAchievement(day, name), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskGetGoalAchievement(Date day, String name) { this.day = day; this.name = name; }
+    public RESTTaskGetGoalAchievement(LocalDate day, String name) { this.day = day; this.name = name; }
 
     @Override public String getMethod() { return "POST"; }
     @Override public String getEndpoint() { return "goalsuccesses"; }
     @Override public String getMessage() { return "Getting goal successes..."; }
-    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear() + 1900).accumulate("day", day.getDay()).accumulate("name", name); }
+    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear()).accumulate("day", day.getDayOfYear()).accumulate("name", name); }
 
     @Override
     public Boolean process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {

@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,17 +17,15 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RESTTaskSubmitMeal implements RESTTask<Boolean> {
 
-    private final Date day;
+    private final LocalDate day;
     private final Meal meal;
 
     public static void enqueue(Meal meal, Runnable onSuccess, Consumer<String> onFailure) {
         enqueue(null, meal, onSuccess, onFailure);
     }
 
-    public static void enqueue(Date day, Meal meal, Runnable onSuccess, Consumer<String> onFailure) {
-        if(day == null) {
-            day = Date.from(Instant.now());
-        }
+    public static void enqueue(LocalDate day, Meal meal, Runnable onSuccess, Consumer<String> onFailure) {
+        if(day == null) day = LocalDate.now();
 
         Consumer<Boolean> onSuccessProxy = val -> {
           if(val) onSuccess.run();
@@ -36,12 +35,12 @@ public class RESTTaskSubmitMeal implements RESTTask<Boolean> {
         HealthApplication.getInstance().getAPIClient().submitTask(new RESTTaskSubmitMeal(day, meal), onSuccessProxy, () -> onFailure.accept("API failure"));
     }
 
-    public RESTTaskSubmitMeal(Date day, Meal meal) { this.day = day; this.meal = meal; }
+    public RESTTaskSubmitMeal(LocalDate day, Meal meal) { this.day = day; this.meal = meal; }
 
     @Override public String getMethod() { return "PUT"; }
     @Override public String getEndpoint() { return "mealintake"; }
     @Override public String getMessage() { return "Saving meal..."; }
-    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear() + 1900).accumulate("day", day.getDay()).accumulate("mealname", meal.getName()).accumulate("calories", meal.getCalories()); }
+    @Override public JSONObject getParameters() throws JSONException { return new JSONObject().accumulate("year", day.getYear()).accumulate("day", day.getDayOfYear()).accumulate("mealname", meal.getName()).accumulate("calories", meal.getCalories()); }
 
     @Override
     public Boolean process(int responseCode, JSONObject json, Map<String, List<String>> headers) throws JSONException {
