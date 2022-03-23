@@ -29,5 +29,6 @@ public class HomeScreenFragment extends Fragment {
         //APIDemos.stepTrackingAPIDemo(msgGenerator);
         //APIDemos.exerciseSessionTrackingDemo(msgGenerator);
         //APIDemos.goalTrackingDemo(msgGenerator);
+        //APIDemos.goalSuccessTrackingDemo(msgGenerator);
     }
 }

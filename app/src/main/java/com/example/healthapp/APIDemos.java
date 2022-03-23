@@ -158,4 +158,24 @@ public class APIDemos {
             }, msgGenerator);
         }
     }
+
+    public static void goalSuccessTrackingDemo(Consumer<String> msgGenerator) {
+        RESTTaskGetAllGoalAchievements.enqueue(ach -> {
+            System.out.println("Found " + ach.length + " achievement(s)!");
+            for (String s : ach) System.out.println(s);
+
+            String newName = "test goal " + System.currentTimeMillis();
+            RESTTaskSubmitGoalAchievement.enqueue(newName, () -> {
+                System.out.println("submitted!!");
+
+                RESTTaskGetGoalAchievement.enqueue(newName, success -> {
+                    System.out.println("Did we get the same name back? " + success);
+
+                    RESTTaskGetGoalAchievement.enqueue("blabla something that definitely isn't in the DB", success2 -> {
+                        System.out.println("Did we get back something that definitely isn't in the database? " + success2);
+                    }, msgGenerator);
+                }, msgGenerator);
+            }, msgGenerator);
+        }, msgGenerator);
+    }
 }
