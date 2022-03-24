@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.healthapp.R;
+import com.example.healthapp.backend.exercise.RESTTaskSetSteps;
 import com.example.healthapp.backend.goals.RESTTaskGetGoals;
+import com.example.healthapp.ui.MainActivity;
 
 public class GoalsFragment extends Fragment {
 
@@ -30,7 +32,7 @@ public class GoalsFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             RESTTaskGetGoals.enqueue(goals -> {
-                recyclerView.setAdapter(new MyGoalRecyclerViewAdapter(goals));
+                recyclerView.setAdapter(new MyGoalRecyclerViewAdapter(goals, this::refresh, this::error));
                 if(goals.length > 0) view4.setVisibility(View.GONE);
             }, this::error);
         }
@@ -40,6 +42,10 @@ public class GoalsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void refresh() {
+        ((MainActivity)getActivity()).showFrag(GoalsFragment.class);
     }
 
     private void error(String msg) {
