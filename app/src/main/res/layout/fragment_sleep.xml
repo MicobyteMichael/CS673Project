@@ -24,79 +24,144 @@ tools:context=".record_sleep">
     />
 
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+        <LinearLayout
+            android:id="@+id/linear_layout_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
 
-public class MainActivity extends AppCompatActivity {
+            <TextView
+                android:id="@+id/tv_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Android Event Start"
+                android:textColor="@android:color/white"
+                android:textSize="20dp"
+                android:textStyle="normal" />
+        </LinearLayout>
 
-private String EVENT_DATE_TIME = "2023-12-31 10:30:00";
-private String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-private LinearLayout linear_layout_1, linear_layout_2;
-private TextView tv_days, tv_hour, tv_minute, tv_second;
-private Handler handler = new Handler();
-private Runnable runnable;
+        <LinearLayout
+            android:id="@+id/linear_layout_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:visibility="visible">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-protected void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-setContentView(R.layout.count_down);
+                <TextView
+                    android:id="@+id/tv_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="00"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-initUI();
-countDownStart();
-}
-private void initUI()
-    {
-linear_layout_1 = findViewById(R.id.linear_layout_1);
-linear_layout_2 = findViewById(R.id.linear_layout_2);
-tv_days = findViewById(R.id.tv_days);
-tv_hour = findViewById(R.id.tv_hour);
-tv_minute = findViewById(R.id.tv_minute);
-tv_second = findViewById(R.id.tv_second);
-}
+                <TextView
+                    android:id="@+id/tv_days_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Days"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
 
-private void countDownStart() {
-runnable = new Runnable() {
-@Override
-public void run() {
-try {
-handler.postDelayed(this, 1000);
-SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-Date event_date = dateFormat.parse(EVENT_DATE_TIME);
-Date current_date = new Date();
-if (!current_date.after(event_date)) {
-long diff = event_date.getTime() - current_date.getTime();
-long Days = diff / (24 * 60 * 60 * 1000);
-long Hours = diff / (60 * 60 * 1000) % 24;
-long Minutes = diff / (60 * 1000) % 60;
-long Seconds = diff / 1000 % 60;
-//
-tv_days.setText(String.format("%02d", Days));
-tv_hour.setText(String.format("%02d", Hours));
-tv_minute.setText(String.format("%02d", Minutes));
-tv_second.setText(String.format("%02d", Seconds));
-} else {
-linear_layout_1.setVisibility(View.VISIBLE);
-linear_layout_2.setVisibility(View.GONE);
-handler.removeCallbacks(runnable);
-}
-} catch (Exception e) {
-e.printStackTrace();
-}
-}
-};
-handler.postDelayed(runnable, 0);
-}
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-protected void onStop() {
-super.onStop();
-handler.removeCallbacks(runnable);
-}
-}
+                <TextView
+                    android:id="@+id/tv_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="00"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_hour_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Hour"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="00"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_minute_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Minute"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="00"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_second_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Second"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
