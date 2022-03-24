@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private DrawerLayout theDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private Fragment currFrag;
 
     private SensorManager sensors;
     private Sensor stepCounter;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public MainActivity() {
         super(R.layout.activity_main);
+        RESTTaskGetSteps.enqueue(s -> { steps = s; }, err -> dialog("Failed to get the number of saved steps!"));
     }
 
     {
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         );
 
-        RESTTaskGetSteps.enqueue(s -> { steps = s; }, err -> dialog("Failed to get the number of saved steps!"));
         sensors = (SensorManager)getSystemService(SENSOR_SERVICE);
         stepCounter = sensors.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
@@ -130,13 +131,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void showFrag(Class<? extends Fragment> frag) {
-        RESTTaskSetSteps.enqueue(steps, () -> {
+        try {
+            currFrag = frag.newInstance();
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Runnable transition = () -> {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.flContent, frag, null)
+                    .replace(R.id.flContent, currFrag, null)
                     .addToBackStack(null)
                     .commit();
-        }, err -> dialog("Failed to save steps!"));
+        };
+
+        if(steps == 0) transition.run();
+        else RESTTaskSetSteps.enqueue(steps, transition, err -> dialog("Failed to save steps!"));
     }
 
     @Override
@@ -164,6 +174,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
         if(((int)sensorEvent.values[0]) == 1) {
             steps += 1;
+        }
+
+        if(currFrag != null && (currFrag instanceof StepListener)) {
+            ((StepListener)currFrag).onStepCountChanged(steps);
         }
     }
 

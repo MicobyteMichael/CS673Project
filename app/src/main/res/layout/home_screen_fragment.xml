@@ -39,6 +39,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/progressBarSteps" />
 
+            <TextView
+                android:id="@+id/textViewMaxSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="@+id/progressBarSteps"
+                app:layout_constraintStart_toStartOf="@+id/progressBarSteps"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSteps" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

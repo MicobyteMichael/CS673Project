@@ -34,6 +34,7 @@ public class StepsGoal extends Goal {
     @Override public String getGoalType() { return TYPE; }
     @Override public String getGoalComparison() { return Goal.COMP_MINIMUM; }
     @Override public String getGoalParameter() { return type.name(); }
+    public int getSteps() { return Math.round(getThreshold() * type.getDistanceCoefficient()); }
 
     @Override
     public void calculateIsMetToday(Consumer<Boolean> answerCallback, Consumer<String> failureMessageCallback) {
