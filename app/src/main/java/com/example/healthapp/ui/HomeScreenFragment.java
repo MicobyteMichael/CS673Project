@@ -1,34 +1,42 @@
 package com.example.healthapp.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
-import com.example.healthapp.APIDemos;
 import com.example.healthapp.R;
-
-import java.util.function.Consumer;
 
 public class HomeScreenFragment extends Fragment {
 
-    public HomeScreenFragment() {
-        super(R.layout.home_screen_fragment);
-    }
+    private ProgressBar steps;
+    private TextView stepsLabel;
+
+    public HomeScreenFragment() { super(R.layout.home_screen_fragment); }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Consumer<String> msgGenerator = System.err::println;//msg -> new AlertDialog.Builder(getActivity()).setMessage(msg).setNeutralButton("OK", null).show();
+        steps = getActivity().findViewById(R.id.progressBarSteps);
+        stepsLabel = getActivity().findViewById(R.id.textViewSteps);
 
-        // Demos for interacting with all the various APIs - see APIDemos.java for example code
-        //APIDemos.watersAPIDemo(msgGenerator);
-        //APIDemos.mealsAPIDemo(msgGenerator);
-        //APIDemos.sleepTrackingAPIDemo(msgGenerator);
-        //APIDemos.bodyCompositionTrackingAPIDemo(msgGenerator);
-        //APIDemos.stepTrackingAPIDemo(msgGenerator);
-        //APIDemos.exerciseSessionTrackingDemo(msgGenerator);
-        //APIDemos.goalTrackingDemo(msgGenerator);
-        //APIDemos.goalSuccessTrackingDemo(msgGenerator);
+        View exercises = getActivity().findViewById(R.id.layoutHomeExercises);
+        View food = getActivity().findViewById(R.id.layoutHomeFood);
+        View sleep = getActivity().findViewById(R.id.layoutHomeSleep);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if(!prefs.getBoolean("exerciseOnHome", true)) exercises.setVisibility(View.GONE);
+        if(!prefs.getBoolean("foodOnHome", true)) food.setVisibility(View.GONE);
+        if(!prefs.getBoolean("sleepOnHome", true)) sleep.setVisibility(View.GONE);
+
+        if(!prefs.getBoolean("stepsOnHome", true)) {
+            steps.setVisibility(View.GONE);
+            stepsLabel.setVisibility(View.GONE);
+        }
     }
 }

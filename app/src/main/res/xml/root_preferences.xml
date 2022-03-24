@@ -22,36 +22,10 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <!-- <PreferenceCategory app:title="Messages">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="Your signature"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="Default reply action"
-            app:useSimpleSummaryProvider="true" />
-
+    <PreferenceCategory app:title="Home Screen">
+        <SwitchPreferenceCompat app:key="stepsOnHome" app:title="Show step count" app:defaultValue="true" />
+        <SwitchPreferenceCompat app:key="exerciseOnHome" app:title="Show common exercises" app:defaultValue="true" />
+        <SwitchPreferenceCompat app:key="foodOnHome" app:title="Show food intake" app:defaultValue="true" />
+        <SwitchPreferenceCompat app:key="sleepOnHome" app:title="Show sleep" app:defaultValue="true" />
     </PreferenceCategory>
-
-    <PreferenceCategory app:title="Sync">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="Sync email periodically" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="Only download attachments when manually requested"
-            app:summaryOn="Automatically download attachments for incoming emails"
-            app:title="Download incoming attachments" />
-
-    </PreferenceCategory> -->
-
 </PreferenceScreen>

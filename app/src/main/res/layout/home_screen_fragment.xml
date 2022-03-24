@@ -26,7 +26,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:progress="30" />
+                tools:progress="30"/>
 
             <TextView
                 android:id="@+id/textViewSteps"
@@ -52,7 +52,8 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="30dp"
                     android:layout_marginHorizontal="12dp"
-                    android:background="@drawable/rounded_rect">
+                    android:background="@drawable/rounded_rect"
+                    android:id="@+id/layoutHomeExercises">
 
                     <TextView
                         android:id="@+id/textViewExerciseOptions"
@@ -136,7 +137,8 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="30dp"
                     android:layout_marginHorizontal="12dp"
-                    android:background="@drawable/rounded_rect">
+                    android:background="@drawable/rounded_rect"
+                    android:id="@+id/layoutHomeFood">
 
                     <TextView
                         android:id="@+id/textViewMealDetails"
@@ -181,7 +183,8 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="30dp"
                     android:layout_marginHorizontal="12dp"
-                    android:background="@drawable/rounded_rect">
+                    android:background="@drawable/rounded_rect"
+                    android:id="@+id/layoutHomeSleep">
 
                     <TextView
                         android:id="@+id/textViewSleepDetails"

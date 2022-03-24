@@ -12,7 +12,7 @@
                     android:checked="true" />
                 <item
                     android:id="@xml/root_preferences"
-                    android:title="Account Settings" />
+                    android:title="Settings" />
                 <item
                     android:id="@layout/fragment_exercise_list"
                     android:title="Exercise Sessions" />
