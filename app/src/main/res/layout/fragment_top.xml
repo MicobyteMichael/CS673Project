@@ -1,72 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
     android:background="#DDDDDD"
+    android:orientation="vertical"
     tools:context=".TopFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <?xml version="1.0" encoding="utf-8"?>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Meal Type"
+        android:text="Submit Meal"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="30sp"
         android:textStyle="bold" />
+
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <RadioButton
+            android:id="@+id/radio_Breakfast"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Breakfast" />
+
+        <RadioButton
+            android:id="@+id/radio_Lunch"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Lunch" />
+
+        <RadioButton
+            android:id="@+id/radio_Dinner"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Dinner" />
+
+        <RadioButton
+            android:id="@+id/radio_other_meal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Other Meal (Choose Name)" />
+
     </RadioGroup>
 
-    <RadioButton
-        android:id="@+id/radio_Breakfast"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="Breakfast" />
-
-    <RadioButton
-        android:id="@+id/radio_Lunch"
-        android:layout_width="260dp"
-        android:layout_height="266dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="Lunch" />
-
-    <RadioButton
-        android:id="@+id/radio_Dinner"
-        android:layout_width="120dp"
-        android:layout_height="342dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="Dinner" />
-
-
     <EditText
         android:id="@+id/editTextName"
-        android:layout_width="200dp"
-        android:layout_height="400dp"
-        android:hint="Glasses of water"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_marginTop="32dp"
+        android:hint="Calories" />
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="250dp"
-        android:layout_height="450dp"
-        android:hint="Calories"
-        />
-
-
-
-</RelativeLayout>
-
-
-
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonSubmitMeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
