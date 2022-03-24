@@ -11,14 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.healthapp.R;
 import com.example.healthapp.backend.foodanddrink.RESTTaskGetMeals;
+import com.example.healthapp.backend.foodanddrink.RESTTaskGetWaters;
+import com.example.healthapp.backend.foodanddrink.RESTTaskSetWaters;
 import com.example.healthapp.ui.MainActivity;
 
 import java.util.function.Consumer;
 
 public class MealsFragment extends Fragment {
+
+    private int numWaters = 0;
+    private TextView waters;
+
+    private void error(String msg) {
+        new AlertDialog.Builder(getActivity()).setMessage(msg).setNeutralButton("OK", null).show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,7 +37,9 @@ public class MealsFragment extends Fragment {
         View view3 = view.findViewById(R.id.buttonSubmitMeal);
         View view4 = view.findViewById(R.id.textViewNoMealsYet);
 
-        Consumer<String> errGenerator = msg -> new AlertDialog.Builder(getActivity()).setMessage(msg).setNeutralButton("OK", null).show();
+        View btnAddWater = view.findViewById(R.id.buttonIncreaseWaters);
+        View btnSubWater = view.findViewById(R.id.buttonDecreaseWaters);
+        waters = (TextView)view.findViewById(R.id.textViewNumGlasses);
 
         if(view2 instanceof RecyclerView) {
             Context context = view2.getContext();
@@ -37,13 +49,30 @@ public class MealsFragment extends Fragment {
             RESTTaskGetMeals.enqueue(meals -> {
                 recyclerView.setAdapter(new MyMealRecyclerViewAdapter(meals));
                 if(meals.length > 0) view4.setVisibility(View.GONE);
-            }, errGenerator);
+            }, this::error);
         }
 
         view3.setOnClickListener(v -> {
             ((MainActivity)getActivity()).showFrag(SubmitMealFragment.class);
         });
 
+        btnAddWater.setOnClickListener(v -> changeWater( 1));
+        btnSubWater.setOnClickListener(v -> changeWater(-1));
+
+        RESTTaskGetWaters.enqueue(w -> {
+            numWaters = w;
+            waters.setText(String.valueOf(w));
+        }, err -> error("Failed to retrieve number of waters!"));
+
         return view;
+    }
+
+    private void changeWater(int delta) {
+        if(delta > 0 || numWaters + delta >= 0) {
+            RESTTaskSetWaters.enqueue(numWaters + delta, () -> {
+                numWaters += delta;
+                waters.setText(String.valueOf(numWaters));
+            }, msg -> error("Failed to update waters!"));
+        }
     }
 }
