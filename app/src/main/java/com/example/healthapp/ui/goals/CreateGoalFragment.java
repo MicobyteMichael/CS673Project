@@ -25,9 +25,9 @@ public class CreateGoalFragment extends Fragment {
 
     static {
         goalTypesRegistry.put("Calories Consumed",     CaloriesConsumedGoalFragment.class);
-        /*goalTypesRegistry.put("Calories Burned",       null);
-        goalTypesRegistry.put("Exercise Duration",     null);
-        goalTypesRegistry.put("Exercise Quantity",     null);*/
+        goalTypesRegistry.put("Calories Burned",       CaloriesBurnedGoalFragment  .class);
+        //goalTypesRegistry.put("Exercise Duration",     null);
+        //goalTypesRegistry.put("Exercise Quantity",     null);
         goalTypesRegistry.put("Amount of Sleep",       SleepGoalFragment.class);
         goalTypesRegistry.put("Steps/Distance Walked", StepGoalFragment .class);
         goalTypesRegistry.put("Water Intake",          WaterGoalFragment.class);
