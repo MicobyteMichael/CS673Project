@@ -27,10 +27,10 @@ public class CreateGoalFragment extends Fragment {
         goalTypesRegistry.put("Calories Consumed",     CaloriesConsumedGoalFragment.class);
         goalTypesRegistry.put("Calories Burned",       CaloriesBurnedGoalFragment  .class);
         goalTypesRegistry.put("Exercise Duration",     ExerciseDurationGoalFragment.class);
-        //goalTypesRegistry.put("Exercise Quantity",     null);
-        goalTypesRegistry.put("Amount of Sleep",       SleepGoalFragment.class);
-        goalTypesRegistry.put("Steps/Distance Walked", StepGoalFragment .class);
-        goalTypesRegistry.put("Water Intake",          WaterGoalFragment.class);
+        goalTypesRegistry.put("Exercise Quantity",     ExerciseQuantityGoalFragment.class);
+        goalTypesRegistry.put("Amount of Sleep",       SleepGoalFragment           .class);
+        goalTypesRegistry.put("Steps/Distance Walked", StepGoalFragment            .class);
+        goalTypesRegistry.put("Water Intake",          WaterGoalFragment           .class);
     }
 
     public CreateGoalFragment() { super(R.layout.fragment_create_goal); }
@@ -95,7 +95,7 @@ public class CreateGoalFragment extends Fragment {
                 RESTTaskSubmitGoal.enqueue(goal, () -> {
                     error("Goal submitted!");
                     ((MainActivity)getActivity()).showFrag(GoalsFragment.class);
-                }, err -> error("Failed to submit the goal"));
+                }, err -> error("That goal name is already in use, please choose another."));
             }, this::error);
         }
     }
