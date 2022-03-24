@@ -107,7 +107,7 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:backgroundTint="@color/purple_500"
-                            app:srcCompat="@drawable/ic_launcher_foreground_unscaled" />
+                            app:srcCompat="@drawable/swimming" />
 
                         <TextView
                             android:id="@+id/exerciseSwimmingName"
@@ -129,7 +129,7 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:backgroundTint="@color/purple_500"
-                            app:srcCompat="@drawable/ic_launcher_foreground_unscaled" />
+                            app:srcCompat="@drawable/cycling" />
 
                         <TextView
                             android:id="@+id/exerciseCyclingName"

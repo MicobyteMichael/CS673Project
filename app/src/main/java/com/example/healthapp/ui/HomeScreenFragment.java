@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.example.healthapp.R;
 import com.example.healthapp.backend.goals.Goal;
 import com.example.healthapp.backend.goals.RESTTaskGetGoals;
 import com.example.healthapp.backend.goals.StepsGoal;
+import com.example.healthapp.ui.meals.SubmitMealFragment;
 
 import java.util.function.Consumer;
 
@@ -64,6 +66,12 @@ public class HomeScreenFragment extends Fragment implements StepListener {
                 onStepCountChanged(((MainActivity)getActivity()).getSteps());
             }
         }, err -> msgGenerator.accept("Failed to synchronize!"));
+
+        getActivity().findViewById(R.id.buttonMainScreenAddMeal)    .setOnClickListener(v -> ((MainActivity)getActivity()).showFrag(SubmitMealFragment.class));
+        getActivity().findViewById(R.id.buttonMainScreenRecordSleep).setOnClickListener(v -> { System.out.println("sleep!!"); });
+        getActivity().findViewById(R.id.mainScreenStartRunning)     .setOnClickListener(v -> { System.out.println("jog!!"); });
+        getActivity().findViewById(R.id.mainScreenStartSwimming)    .setOnClickListener(v -> { System.out.println("swim!!"); });
+        getActivity().findViewById(R.id.mainScreenStartCycling)     .setOnClickListener(v -> { System.out.println("bike!!"); });
     }
 
     @Override
