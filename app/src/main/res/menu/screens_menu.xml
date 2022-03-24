@@ -22,6 +22,9 @@
                 <item
                     android:id="@layout/fragment_meals_list"
                     android:title="Meal &amp; Water Tracking" />
+                <item
+                    android:id="@layout/fragment_goals_list"
+                    android:title="Personal Goals" />
             </group>
         </menu>
     </item>
