@@ -19,6 +19,7 @@ import com.example.healthapp.backend.RESTClient;
 import com.example.healthapp.ui.auth.LoginActivity;
 import com.example.healthapp.ui.bodycomp.BodyCompositionFragment;
 import com.example.healthapp.ui.exercise.ExerciseFragment;
+import com.example.healthapp.ui.meals.MealsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         screenIDMap.put(R.xml   .root_preferences,        AccountSettingsFragment.class);
         screenIDMap.put(R.layout.fragment_exercise_list,  ExerciseFragment.class);
         screenIDMap.put(R.layout.fragment_body_comp_list, BodyCompositionFragment.class);
+        screenIDMap.put(R.layout.fragment_meals_list,     MealsFragment.class);
 
         buttonFunctionMap.put(R.id.logOutButton, this::logOut);
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,21 +29,18 @@
             android:id="@+id/radio_Breakfast"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
             android:text="Breakfast" />
 
         <RadioButton
             android:id="@+id/radio_Lunch"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
             android:text="Lunch" />
 
         <RadioButton
             android:id="@+id/radio_Dinner"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
             android:text="Dinner" />
 
         <RadioButton
@@ -54,18 +52,32 @@
     </RadioGroup>
 
     <EditText
-        android:id="@+id/editTextName"
+        android:id="@+id/editTextCalories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:layout_marginTop="32dp"
         android:hint="Calories" />
 
-    <Button
-        android:id="@+id/buttonSubmitMeal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:layout_marginTop="32dp"
-        android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="32dp">
+
+        <Button
+            android:id="@+id/buttonSubmitMealSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Submit" />
+
+        <Button
+            android:id="@+id/buttonCancelSubmitMeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -19,6 +19,9 @@
                 <item
                     android:id="@layout/fragment_body_comp_list"
                     android:title="Body Composition" />
+                <item
+                    android:id="@layout/fragment_meals_list"
+                    android:title="Meal History" />
             </group>
         </menu>
     </item>
