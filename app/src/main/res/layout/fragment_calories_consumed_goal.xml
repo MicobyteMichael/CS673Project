@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context=".ui.goals.CaloriesConsumedGoalFragment" >
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/mostOrLeast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="At most or at least?" />
+
+    <TextView
+        android:id="@+id/displayMostOrLeast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Max. Calories:" />
+
+    <EditText
+        android:id="@+id/calories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+</LinearLayout>

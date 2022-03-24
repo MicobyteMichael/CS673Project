@@ -24,8 +24,8 @@ public class CreateGoalFragment extends Fragment {
     private static HashMap<String, Class<? extends GoalTypeFragment>> goalTypesRegistry = new HashMap<>();
 
     static {
-        /*goalTypesRegistry.put("Calories Consumed",     null);
-        goalTypesRegistry.put("Calories Burned",       null);
+        goalTypesRegistry.put("Calories Consumed",     CaloriesConsumedGoalFragment.class);
+        /*goalTypesRegistry.put("Calories Burned",       null);
         goalTypesRegistry.put("Exercise Duration",     null);
         goalTypesRegistry.put("Exercise Quantity",     null);
         goalTypesRegistry.put("Amount of Sleep",       null);*/
