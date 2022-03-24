@@ -18,6 +18,7 @@ import com.example.healthapp.R;
 import com.example.healthapp.backend.bodycomp.BodyComposition;
 import com.example.healthapp.backend.bodycomp.RESTTaskGetAllBodyCompositions;
 import com.example.healthapp.backend.bodycomp.RESTTaskSubmitBodyComposition;
+import com.example.healthapp.ui.MainActivity;
 
 import java.time.LocalDate;
 import java.util.function.Consumer;
@@ -29,6 +30,7 @@ public class BodyCompositionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_body_comp_list, container, false);
         View view2 = view.findViewById(R.id.list_body_compositions);
         View view3 = view.findViewById(R.id.buttonSubmitTodaysBodyComp);
+        View view4 = view.findViewById(R.id.textViewNoBodyCompsYet);
 
         Consumer<String> errGenerator = msg -> new AlertDialog.Builder(getActivity()).setMessage(msg).setNeutralButton("OK", null).show();
 
@@ -38,6 +40,7 @@ public class BodyCompositionFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             RESTTaskGetAllBodyCompositions.enqueue(comps -> {
+                if(comps.size() > 0) view4.setVisibility(View.GONE);
                 recyclerView.setAdapter(new MyBodyCompositionRecyclerViewAdapter(comps));
 
                 LocalDate today = LocalDate.now();
@@ -54,9 +57,7 @@ public class BodyCompositionFragment extends Fragment {
 
                 view3.setOnClickListener(v -> {
                     if(hasToday[0]) errGenerator.accept("Your body composition for today has already been recorded.");
-                    else {
-                        System.out.println("recording time!!!!!");
-                    }
+                    else ((MainActivity)getActivity()).showFrag(InputBodyCompositionFragment.class);
                 });
             }, errGenerator);
         }
