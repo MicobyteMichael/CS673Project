@@ -6,7 +6,7 @@
     android:layout_margin="20dp"
     android:background="#DDDDDD"
     android:orientation="vertical"
-    tools:context=".TopFragment">
+    tools:context=".ui.meals.SubmitMealFragment">
 
     <TextView
         android:layout_width="match_parent"
