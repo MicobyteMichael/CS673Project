@@ -7,8 +7,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,19 +22,26 @@ import android.view.View;
 import com.example.healthapp.HealthApplication;
 import com.example.healthapp.R;
 import com.example.healthapp.backend.RESTClient;
+import com.example.healthapp.backend.exercise.RESTTaskGetSteps;
+import com.example.healthapp.backend.exercise.RESTTaskSetSteps;
 import com.example.healthapp.ui.auth.LoginActivity;
 import com.example.healthapp.ui.bodycomp.BodyCompositionFragment;
 import com.example.healthapp.ui.exercise.ExerciseFragment;
 import com.example.healthapp.ui.goals.GoalsFragment;
 import com.example.healthapp.ui.meals.MealsFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private DrawerLayout theDrawer;
     private ActionBarDrawerToggle drawerToggle;
+
+    private SensorManager sensors;
+    private Sensor stepCounter;
+    private int steps;
 
     private HashMap<Integer, Class<? extends Fragment>> screenIDMap = new HashMap<>();
     private HashMap<Integer, Runnable> buttonFunctionMap = new HashMap<>();
@@ -73,6 +86,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         );
+
+        RESTTaskGetSteps.enqueue(s -> { steps = s; }, err -> dialog("Failed to get the number of saved steps!"));
+        sensors = (SensorManager)getSystemService(SENSOR_SERVICE);
+        stepCounter = sensors.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+
+        if(stepCounter == null) {
+            dialog("This device does not have a step sensor, the step counting feature will not work!");
+        } else {
+            new RxPermissions(this).request(Manifest.permission.ACTIVITY_RECOGNITION).subscribe(isGranted -> {
+                if(isGranted) {
+                    sensors.registerListener(this, stepCounter, SensorManager.SENSOR_DELAY_FASTEST);
+                } else {
+                    dialog("Please give the app the fitness tracking permission so it can track steps, then restart the app.");
+                }
+            });
+        }
+    }
+
+    private void dialog(String message) {
+        new AlertDialog.Builder(this).setMessage(message).setNeutralButton("OK", null).show();
     }
 
     private void logOut() {
@@ -97,11 +130,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showFrag(Class<? extends Fragment> frag) {
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.flContent, frag, null)
-                .addToBackStack(null)
-                .commit();
+        RESTTaskSetSteps.enqueue(steps, () -> {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.flContent, frag, null)
+                    .addToBackStack(null)
+                    .commit();
+        }, err -> dialog("Failed to save steps!"));
     }
 
     @Override
@@ -126,5 +161,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if(((int)sensorEvent.values[0]) == 1) {
+            steps += 1;
+        }
+    }
+
+    public int getSteps() { return steps; }
+    @Override public void onBackPressed() {}
+    @Override public void onAccuracyChanged(Sensor sensor, int i) {}
 }
