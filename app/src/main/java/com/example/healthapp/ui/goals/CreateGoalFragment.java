@@ -26,7 +26,7 @@ public class CreateGoalFragment extends Fragment {
     static {
         goalTypesRegistry.put("Calories Consumed",     CaloriesConsumedGoalFragment.class);
         goalTypesRegistry.put("Calories Burned",       CaloriesBurnedGoalFragment  .class);
-        //goalTypesRegistry.put("Exercise Duration",     null);
+        goalTypesRegistry.put("Exercise Duration",     ExerciseDurationGoalFragment.class);
         //goalTypesRegistry.put("Exercise Quantity",     null);
         goalTypesRegistry.put("Amount of Sleep",       SleepGoalFragment.class);
         goalTypesRegistry.put("Steps/Distance Walked", StepGoalFragment .class);
@@ -56,6 +56,7 @@ public class CreateGoalFragment extends Fragment {
 
     private void updateGoalTypeShown() {
         Class<? extends GoalTypeFragment> goalType = goalTypesRegistry.get((String)goalTypeSpinner.getSelectedItem());
+        if(goalType == null) return;
 
         try {
             currFrag = goalType.newInstance();
