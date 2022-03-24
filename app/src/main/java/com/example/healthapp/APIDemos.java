@@ -161,6 +161,10 @@ public class APIDemos {
                     RESTTaskGetGoals.enqueue(goals2 -> {
                         System.out.println(cl + ": Found " + goals2.length + " goal(s)!");
                         for(Goal g : goals2) System.out.println(cl + ": " + g.getDescription());
+
+                        RESTTaskDeleteGoal.enqueue(goal.getName(), () -> {
+                            System.out.println("Removed!!");
+                        }, msgGenerator);
                     }, msgGenerator);
                 }, msgGenerator);
             }, msgGenerator);
