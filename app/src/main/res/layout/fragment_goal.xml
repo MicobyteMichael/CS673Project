@@ -44,7 +44,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="Submit Success" />
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/deleteGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Delete" />
     </LinearLayout>
 
 </LinearLayout>

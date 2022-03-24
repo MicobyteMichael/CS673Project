@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 public class StepsGoal extends Goal {
     public static final String TYPE = "Walking";
 
-    public static Goal create(String name, int numStepsOrMiles, boolean miles) {
+    public static Goal create(String name, float numStepsOrMiles, boolean miles) {
         StepGoalType type = miles ? StepGoalType.Miles : StepGoalType.Steps;
         return new StepsGoal(name, numStepsOrMiles, true, null, type.name());
     }

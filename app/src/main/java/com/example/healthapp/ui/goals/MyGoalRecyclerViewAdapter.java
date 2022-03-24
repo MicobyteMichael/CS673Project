@@ -2,6 +2,7 @@ package com.example.healthapp.ui.goals;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.healthapp.backend.goals.Goal;
+import com.example.healthapp.backend.goals.RESTTaskDeleteGoal;
 import com.example.healthapp.backend.goals.RESTTaskSetGoalActive;
 import com.example.healthapp.backend.goals.RESTTaskSubmitGoal;
 import com.example.healthapp.backend.goals.RESTTaskSubmitGoalAchievement;
@@ -65,6 +67,19 @@ public class MyGoalRecyclerViewAdapter extends RecyclerView.Adapter<MyGoalRecycl
         holder.active.setOnClickListener(v -> {
             RESTTaskSetGoalActive.enqueue(g.getName(), !g.isActive(), refreshPage, msg -> errReporter.accept("Failed to change active status of goal \"" + g.getName() + "\""));
         });
+
+        holder.delete.setOnClickListener(v -> {
+            new AlertDialog.Builder(v.getContext())
+                .setMessage("Are you sure you want to delete the goal \"" + g.getName() + "\"?")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", (i, j) -> {
+                    RESTTaskDeleteGoal.enqueue(g.getName(), () -> {
+                        errReporter.accept("Deleted!");
+                        refreshPage.run();
+                    }, msg -> errReporter.accept("Failed to delete goal \"" + g.getName() + "\"!"));
+                })
+                .show();
+        });
     }
 
     @Override
@@ -74,7 +89,7 @@ public class MyGoalRecyclerViewAdapter extends RecyclerView.Adapter<MyGoalRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mIdView, mContentView, achieved;
-        public final Button active, submitSuccess;
+        public final Button active, submitSuccess, delete;
         public Goal mItem;
 
         public ViewHolder(FragmentGoalBinding binding) {
@@ -84,6 +99,7 @@ public class MyGoalRecyclerViewAdapter extends RecyclerView.Adapter<MyGoalRecycl
             achieved = binding.achieved;
             active = binding.active;
             submitSuccess = binding.submitSuccess;
+            delete = binding.deleteGoal;
         }
 
         @Override

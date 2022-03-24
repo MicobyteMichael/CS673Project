@@ -37,10 +37,7 @@ public class GoalsFragment extends Fragment {
             }, this::error);
         }
 
-        view3.setOnClickListener(v -> {
-            System.out.println("Add goal!!!");
-        });
-
+        view3.setOnClickListener(v -> ((MainActivity)getActivity()).showFrag(CreateGoalFragment.class));
         return view;
     }
 

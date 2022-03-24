@@ -42,9 +42,9 @@ public abstract class Goal {
         return null;
     }
 
-    private final String name;
-    private final float threshold;
-    private final boolean active;
+    private String name;
+    private float threshold;
+    private boolean active;
 
     public Goal(String name, float threshold, boolean active) {
         this.name = name;
@@ -55,6 +55,9 @@ public abstract class Goal {
     public String getName() { return name; }
     public float getThreshold() { return threshold; }
     public boolean isActive() { return active; }
+
+    public void setActive(boolean active) { this.active = active; }
+    public void setName(String name) { this.name = name; }
 
     public String getDescription() {
         String param = getGoalParameter();
