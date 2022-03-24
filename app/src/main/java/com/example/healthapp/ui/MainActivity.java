@@ -29,6 +29,7 @@ import com.example.healthapp.ui.bodycomp.BodyCompositionFragment;
 import com.example.healthapp.ui.exercise.ExerciseFragment;
 import com.example.healthapp.ui.goals.GoalsFragment;
 import com.example.healthapp.ui.meals.MealsFragment;
+import com.example.healthapp.ui.sleep.SleepSessionsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -53,12 +54,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     {
-        screenIDMap.put(R.layout.home_screen_fragment,    HomeScreenFragment.class);
-        screenIDMap.put(R.xml   .root_preferences,        AccountSettingsFragment.class);
-        screenIDMap.put(R.layout.fragment_exercise_list,  ExerciseFragment.class);
-        screenIDMap.put(R.layout.fragment_body_comp_list, BodyCompositionFragment.class);
-        screenIDMap.put(R.layout.fragment_meals_list,     MealsFragment.class);
-        screenIDMap.put(R.layout.fragment_goals_list,     GoalsFragment.class);
+        screenIDMap.put(R.layout.home_screen_fragment,         HomeScreenFragment     .class);
+        screenIDMap.put(R.xml   .root_preferences,             AccountSettingsFragment.class);
+        screenIDMap.put(R.layout.fragment_exercise_list,       ExerciseFragment       .class);
+        screenIDMap.put(R.layout.fragment_body_comp_list,      BodyCompositionFragment.class);
+        screenIDMap.put(R.layout.fragment_meals_list,          MealsFragment          .class);
+        screenIDMap.put(R.layout.fragment_goals_list,          GoalsFragment          .class);
+        screenIDMap.put(R.layout.fragment_sleep_sessions_list, SleepSessionsFragment  .class);
 
         buttonFunctionMap.put(R.id.logOutButton, this::logOut);
     }
@@ -132,10 +134,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void showFrag(Class<? extends Fragment> frag) {
         try {
-            currFrag = frag.newInstance();
-        } catch(Exception e) {
+            showFrag(frag.newInstance());
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void showFrag(Fragment frag) {
+        currFrag = frag;
 
         Runnable transition = () -> {
             getSupportFragmentManager().beginTransaction()

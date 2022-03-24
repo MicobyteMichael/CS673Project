@@ -25,6 +25,9 @@
                 <item
                     android:id="@layout/fragment_goals_list"
                     android:title="Personal Goals" />
+                <item
+                    android:id="@layout/fragment_sleep_sessions_list"
+                    android:title="Sleep Tracking" />
             </group>
         </menu>
     </item>

@@ -16,6 +16,7 @@ import com.example.healthapp.backend.goals.Goal;
 import com.example.healthapp.backend.goals.RESTTaskGetGoals;
 import com.example.healthapp.backend.goals.StepsGoal;
 import com.example.healthapp.ui.meals.SubmitMealFragment;
+import com.example.healthapp.ui.sleep.SleepingFragment;
 
 import java.util.function.Consumer;
 
@@ -68,7 +69,7 @@ public class HomeScreenFragment extends Fragment implements StepListener {
         }, err -> msgGenerator.accept("Failed to synchronize!"));
 
         getActivity().findViewById(R.id.buttonMainScreenAddMeal)    .setOnClickListener(v -> ((MainActivity)getActivity()).showFrag(SubmitMealFragment.class));
-        getActivity().findViewById(R.id.buttonMainScreenRecordSleep).setOnClickListener(v -> { System.out.println("sleep!!"); });
+        getActivity().findViewById(R.id.buttonMainScreenRecordSleep).setOnClickListener(v -> SleepingFragment.startSleepSession(getActivity(), msgGenerator));
         getActivity().findViewById(R.id.mainScreenStartRunning)     .setOnClickListener(v -> { System.out.println("jog!!"); });
         getActivity().findViewById(R.id.mainScreenStartSwimming)    .setOnClickListener(v -> { System.out.println("swim!!"); });
         getActivity().findViewById(R.id.mainScreenStartCycling)     .setOnClickListener(v -> { System.out.println("bike!!"); });

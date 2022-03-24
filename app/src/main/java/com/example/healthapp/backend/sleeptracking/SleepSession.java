@@ -2,6 +2,10 @@ package com.example.healthapp.backend.sleeptracking;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 public class SleepSession {
 
@@ -34,5 +38,23 @@ public class SleepSession {
     public long getEndSecond() {
         if(end != null) return end.getEpochSecond();
         else return -1;
+    }
+
+    public String getDescription() {
+        Instant start = getStart(), end = getEnd();
+        Duration dur = getDuration();
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
+        String desc = "Started at " + fmt.format(start);
+
+        if(end != null) {
+            float hours = dur.getSeconds() / 60F / 60F;
+            float hoursRounded = Math.round(hours * 10) / 10F;
+
+            desc += (", Ended at " + fmt.format(end));
+            desc += (", Duration: " + hoursRounded + " hours");
+        }
+
+        return desc;
     }
 }
