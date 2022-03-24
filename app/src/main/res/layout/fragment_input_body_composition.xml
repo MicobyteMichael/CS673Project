@@ -1,13 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.bodycomp.InputBodyCompositionFragment">
 
     <TextView
+        android:id="@+id/textViewInputBodyCompInstructions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="test" />
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="\nInstructions: Please measure these values:\n\n
+1. Body Weight\n
+Use a normal scale.\n\n
+2. Body Fat Percentage\n
+The most common way to do this is to use a soft tape measure to measure your neck and waist circumference,
+and then this app will use the Navy Body Fat Formula to calculate approximate body fat. You will also need
+to supply your height\n\n
+3. Muscle Weight\n
+This will be calculated automatically using your body fat percentage and your weight."
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/editTextNumberWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInputBodyCompInstructions" />
+
+    <TextView
+        android:id="@+id/textViewWeightInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weight (lbs)"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberWeight"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumberWeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberWeight" />
+
+    <EditText
+        android:id="@+id/editTextNumberHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberWeight" />
+
+    <TextView
+        android:id="@+id/textViewHeightInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Height (in.)"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberHeight"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumberWeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberHeight" />
+
+    <EditText
+        android:id="@+id/editTextNumberNeck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberHeight" />
+
+    <TextView
+        android:id="@+id/textViewNeckInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Neck (in.)"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberNeck"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumberWeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberNeck" />
+
+    <EditText
+        android:id="@+id/editTextNumberWaist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberNeck" />
+
+    <TextView
+        android:id="@+id/textViewWaistInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waist (in.)"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberWaist"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumberWeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberWaist" />
+
+    <Button
+        android:id="@+id/buttonSubmitBodyComp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

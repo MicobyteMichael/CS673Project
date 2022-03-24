@@ -29,5 +29,4 @@ public class BodyComposition {
     public String getDescription() {
         return getWeight() + "lbs., " + getBodyFatPercentage() + "% body fat, " + getMuscleWeight() + "lbs. muscle";
     }
-
 }
