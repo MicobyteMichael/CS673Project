@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context=".ui.goals.SleepGoalFragment" >
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sleepGoalMostOrLeast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="At most or at least?" />
+
+    <TextView
+        android:id="@+id/sleepGoalDisplayMostOrLeast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Max. Hours:" />
+
+    <EditText
+        android:id="@+id/sleepGoalHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+</LinearLayout>
