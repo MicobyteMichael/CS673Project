@@ -29,8 +29,8 @@ public class CreateGoalFragment extends Fragment {
         goalTypesRegistry.put("Exercise Duration",     null);
         goalTypesRegistry.put("Exercise Quantity",     null);*/
         goalTypesRegistry.put("Amount of Sleep",       SleepGoalFragment.class);
-        goalTypesRegistry.put("Steps/Distance Walked", StepGoalFragment.class);
-        //goalTypesRegistry.put("Water Intake",          null);
+        goalTypesRegistry.put("Steps/Distance Walked", StepGoalFragment .class);
+        goalTypesRegistry.put("Water Intake",          WaterGoalFragment.class);
     }
 
     public CreateGoalFragment() { super(R.layout.fragment_create_goal); }
