@@ -21,7 +21,7 @@
                     android:title="Body Composition" />
                 <item
                     android:id="@layout/fragment_meals_list"
-                    android:title="Meal History" />
+                    android:title="Meal &amp; Water Tracking" />
             </group>
         </menu>
     </item>
