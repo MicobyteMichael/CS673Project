@@ -2,6 +2,7 @@ package com.example.healthapp.ui.exercise;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,16 @@ import com.example.healthapp.backend.exercise.ExerciseSession;
 import com.example.healthapp.databinding.FragmentExerciseBinding;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class MyExerciseSessionRecyclerViewAdapter extends RecyclerView.Adapter<MyExerciseSessionRecyclerViewAdapter.ViewHolder> {
 
     private final ExerciseSession[] mValues;
     private final Consumer<String> msgGenerator;
+    private final Activity act;
     private final Runnable refresh;
 
-    public MyExerciseSessionRecyclerViewAdapter(ExerciseSession[] items, Consumer<String> msgGenerator, Runnable refresh) { mValues = items; this.msgGenerator = msgGenerator; this.refresh = refresh; }
+    public MyExerciseSessionRecyclerViewAdapter(ExerciseSession[] items, Consumer<String> msgGenerator, Activity act, Runnable refresh) { mValues = items; this.msgGenerator = msgGenerator; this.act = act; this.refresh = refresh; }
     private boolean isEmpty() { return mValues.length == 0; }
 
     @Override
@@ -39,7 +42,7 @@ public class MyExerciseSessionRecyclerViewAdapter extends RecyclerView.Adapter<M
 
         if(s.getEnd() == null) {
             holder.end.setVisibility(View.VISIBLE);
-            holder.end.setOnClickListener(v -> ExercisingFragment.endExerciseSession(s.getName(), msgGenerator, refresh));
+            holder.end.setOnClickListener(v -> ExercisingFragment.endExerciseSession(s, msgGenerator, act, refresh));
         } else {
             holder.end.setVisibility(View.GONE);
             holder.end.setOnClickListener(v -> {});

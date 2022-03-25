@@ -17,10 +17,12 @@ import android.widget.Spinner;
 import com.example.healthapp.R;
 import com.example.healthapp.backend.exercise.ExerciseType;
 import com.example.healthapp.backend.exercise.RESTTaskGetExerciseSessions;
+import com.example.healthapp.backend.exercise.RESTTaskStartExerciseSession;
 import com.example.healthapp.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ExerciseFragment extends Fragment {
 
@@ -39,7 +41,7 @@ public class ExerciseFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             RESTTaskGetExerciseSessions.enqueue(sessions -> {
-                recyclerView.setAdapter(new MyExerciseSessionRecyclerViewAdapter(sessions, errGenerator, () -> ((MainActivity)getActivity()).showFrag(ExerciseFragment.class)));
+                recyclerView.setAdapter(new MyExerciseSessionRecyclerViewAdapter(sessions, errGenerator, getActivity(), () -> ((MainActivity)getActivity()).showFrag(ExerciseFragment.class)));
                 if(sessions.length > 0) view4.setVisibility(View.GONE);
             }, errGenerator);
         }

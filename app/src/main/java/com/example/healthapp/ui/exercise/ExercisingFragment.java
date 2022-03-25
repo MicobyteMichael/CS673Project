@@ -25,74 +25,119 @@ import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ExercisingFragment extends Fragment {
 
-    public static void startExerciseSession(ExerciseType type, Activity act, Consumer<String> dialogGenerator) {
-        EditText nameInputter = new EditText(act);
-        nameInputter.setInputType(InputType.TYPE_CLASS_TEXT);
+    private static void getTextRaw(Activity act, String msg, int inputType, Consumer<String> dialogGenerator, Consumer<String> acceptor, String defaultVal) {
+        EditText valInputter = new EditText(act);
+        valInputter.setInputType(inputType);
+
+        if(defaultVal != null) valInputter.setText(defaultVal);
 
         new AlertDialog.Builder(act)
-            .setTitle("Please input a name for this exercise session")
-            .setView(nameInputter)
+            .setTitle(msg)
+            .setView(valInputter)
             .setPositiveButton("OK", (d, w) -> {
-                String name = nameInputter.getText().toString();
+                String val = valInputter.getText().toString();
 
-                RESTTaskStartExerciseSession.enqueue(name, type, () -> {
-                    ((MainActivity)act).showFrag(new ExercisingFragment(name, type));
-                }, err -> dialogGenerator.accept("A session with that name already exists, please choose another."));
+                if(val.length() == 0) dialogGenerator.accept("Please input a value!");
+                else acceptor.accept(val);
             })
             .setNegativeButton("Cancel", (d, w) -> d.cancel())
             .show();
     }
 
-    public static void endExerciseSession(String name, Consumer<String> dialogGenerator, Runnable onSuccess) {
-        RESTTaskEndExerciseSession.enqueue(name, 0, 0, 0, () -> { // TODO implement actual calorie, heart rate, and distance
-            dialogGenerator.accept("Saved exercise session \"" + name + "\"");
-            onSuccess.run();
-        }, err -> dialogGenerator.accept("Failed to exercise session"));
+    private static void getFloatRaw(Activity act, String msg, int inputType, Consumer<String> dialogGenerator, Consumer<Float> acceptor, String defaultVal) {
+        Consumer<String> acceptorProxy = str -> {
+            try {
+                acceptor.accept(Float.parseFloat(str));
+            } catch(Exception e) {
+                dialogGenerator.accept("Please input a valid number!");
+                e.printStackTrace();
+            }
+        };
+
+        getTextRaw(act, msg, inputType, dialogGenerator, acceptorProxy, defaultVal);
     }
 
-    private final String name;
-    private final ExerciseType type;
+    private static void getInt(Activity act, String msg, Consumer<String> dialogGenerator, Consumer<Integer> acceptor, Integer defaultVal) {
+        Consumer<Float> acceptorProxy = f -> {
+            int i = f.intValue();
+            if(f == i) acceptor.accept(i);
+            else dialogGenerator.accept("Please input a whole number!");
+        };
+
+        getFloatRaw(act, msg, InputType.TYPE_CLASS_NUMBER, dialogGenerator, acceptorProxy, defaultVal == null ? null : String.valueOf(defaultVal.intValue()));
+    }
+
+    public static void getText(Activity act, String msg, Consumer<String> dialogGenerator, Consumer<String> acceptor) { getTextRaw(act, msg, InputType.TYPE_CLASS_TEXT, dialogGenerator, acceptor, null); }
+    public static void getFloat(Activity act, String msg, Consumer<String> dialogGenerator, Consumer<Float> acceptor, Float defaultVal) { getFloatRaw(act, msg, InputType.TYPE_NUMBER_FLAG_DECIMAL, dialogGenerator, acceptor, defaultVal == null ? null : String.valueOf(defaultVal.floatValue())); }
+
+    public static void startExerciseSession(ExerciseType type, Activity act, Consumer<String> dialogGenerator) {
+        getText(act, "Please input a name for this exercise session", dialogGenerator, name -> {
+            RESTTaskStartExerciseSession.enqueue(name, type, () -> {
+                ((MainActivity)act).showFrag(new ExercisingFragment(new ExerciseSession(name, type, Instant.now(), null, 0, 0, 0)));
+            }, err -> dialogGenerator.accept("A session with that name already exists, please choose another."));
+        });
+    }
+
+    public static void endExerciseSession(ExerciseSession s, Consumer<String> dialogGenerator, Activity act, Runnable onSuccess) {
+        float hours = Duration.between(s.getStart(), Instant.now()).getSeconds() / 60F / 60F;
+        int heart = s.getExerciseType().getAverageHeartRate();
+        int cals  = Math.round(s.getExerciseType().getCaloriesPerHour() * hours);
+
+        getInt(act, "Please input your average heart rate.", dialogGenerator, heartRate -> {
+            getInt(act, "Please input your number of calories burned.", dialogGenerator, calories -> {
+                Consumer<Number> submitter = measuredValue -> {
+                    RESTTaskEndExerciseSession.enqueue(s.getName(), heartRate, calories, measuredValue.floatValue(), () -> {
+                        dialogGenerator.accept("Saved exercise session \"" + s.getName() + "\"");
+                        onSuccess.run();
+                    }, err -> dialogGenerator.accept("Failed to exercise session"));
+                };
+
+                String m = "Please input your " + s.getExerciseType().getMeasuredValueName();
+                String u = s.getExerciseType().getUnitName();
+                if(u.length() > 0) m += (" in " + u);
+
+                if(s.getExerciseType().isIntegerQuantity()) getInt(act, m, dialogGenerator, i -> submitter.accept(i), null);
+                else getFloat(act, m, dialogGenerator, f -> submitter.accept(f), null);
+            }, cals);
+        }, heart);
+    }
+
+    private final ExerciseSession session;
     private Timer timer;
 
-    public ExercisingFragment(String name, ExerciseType type) {
+    public ExercisingFragment(ExerciseSession session) {
         super(R.layout.fragment_exercising);
-        this.name = name;
-        this.type = type;
+        this.session = session;
         timer = new Timer();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ((TextView)getActivity().findViewById(R.id.textViewCurrentlyExercising)).setText("Currently Exercising: \"" + name + "\"");
-        ((TextView)getActivity().findViewById(R.id.textViewExerciseNameAndDesc)).setText(type.getActivityName() + ": " + type.getDescription());
+        ((TextView)getActivity().findViewById(R.id.textViewCurrentlyExercising)).setText("Currently Exercising: \"" + session.getName() + "\"");
+        ((TextView)getActivity().findViewById(R.id.textViewExerciseNameAndDesc)).setText(session.getExerciseType().getActivityName() + ": " + session.getExerciseType().getDescription());
+        ((TextView)getActivity().findViewById(R.id.textViewStartTime2)).setText(session.getStartFormatted());
 
         Consumer<String> dialogGen = msg -> new AlertDialog.Builder(getActivity()).setMessage(msg).setNeutralButton("OK", null).show();
-        getActivity().findViewById(R.id.buttonEndExerciseSession).setOnClickListener(v -> endExerciseSession(name, dialogGen, () -> {
+        getActivity().findViewById(R.id.buttonEndExerciseSession).setOnClickListener(v -> endExerciseSession(session, dialogGen, getActivity(), () -> {
             timer.cancel();
             ((MainActivity)getActivity()).showFrag(ExerciseFragment.class);
         }));
 
-        RESTTaskGetExerciseSessions.enqueue(exers -> {
-            for(ExerciseSession s : exers) if(s.getName().equals(name)) {
-                ((TextView)getActivity().findViewById(R.id.textViewStartTime2)).setText(s.getStartFormatted());
 
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        getActivity().runOnUiThread(() -> {
-                            long minutes = Duration.between(s.getStart(), Instant.now()).getSeconds() / 60;
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+            getActivity().runOnUiThread(() -> {
+                long minutes = Duration.between(session.getStart(), Instant.now()).getSeconds() / 60;
 
-                            TextView tv = getActivity().findViewById(R.id.textViewDuration2);
-                            if(tv != null) tv.setText((minutes / 60) + " hours, " + (minutes % 60) + " minutes");
-                        });
-                    }
-                }, 0, 1000);
-
-                break;
+                TextView tv = getActivity().findViewById(R.id.textViewDuration2);
+                if(tv != null) tv.setText((minutes / 60) + " hours, " + (minutes % 60) + " minutes");
+            });
             }
-        }, err -> dialogGen.accept("Failed to calculate start time"));
+        }, 0, 1000);
     }
 }
