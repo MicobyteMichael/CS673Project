@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.example.healthapp.R;
+import com.example.healthapp.backend.exercise.ExerciseType;
 import com.example.healthapp.backend.foodanddrink.Meal;
 import com.example.healthapp.backend.foodanddrink.RESTTaskGetMeals;
 import com.example.healthapp.backend.goals.Goal;
@@ -19,6 +20,7 @@ import com.example.healthapp.backend.goals.RESTTaskGetGoals;
 import com.example.healthapp.backend.goals.StepsGoal;
 import com.example.healthapp.backend.sleeptracking.RESTTaskGetSleep;
 import com.example.healthapp.backend.sleeptracking.SleepSession;
+import com.example.healthapp.ui.exercise.ExercisingFragment;
 import com.example.healthapp.ui.meals.SubmitMealFragment;
 import com.example.healthapp.ui.sleep.SleepingFragment;
 
@@ -95,7 +97,7 @@ public class HomeScreenFragment extends Fragment implements StepListener {
 
         getActivity().findViewById(R.id.buttonMainScreenAddMeal)    .setOnClickListener(v -> ((MainActivity)getActivity()).showFrag(SubmitMealFragment.class));
         getActivity().findViewById(R.id.buttonMainScreenRecordSleep).setOnClickListener(v -> SleepingFragment.startSleepSession(getActivity(), msgGenerator));
-        getActivity().findViewById(R.id.mainScreenStartRunning)     .setOnClickListener(v -> { System.out.println("jog!!"); });
+        getActivity().findViewById(R.id.mainScreenStartRunning)     .setOnClickListener(v -> ExercisingFragment.startExerciseSession(ExerciseType.Jogging, getActivity(), msgGenerator));
         getActivity().findViewById(R.id.mainScreenStartSwimming)    .setOnClickListener(v -> { System.out.println("swim!!"); });
         getActivity().findViewById(R.id.mainScreenStartCycling)     .setOnClickListener(v -> { System.out.println("bike!!"); });
     }

@@ -1,5 +1,7 @@
 package com.example.healthapp.backend.exercise;
 
+import com.example.healthapp.backend.sleeptracking.SleepSession;
+
 import java.time.Duration;
 import java.time.Instant;
 
@@ -33,6 +35,13 @@ public class ExerciseSession {
     public Instant getStart() { return start; }
     public Instant getEnd() { return end; }
 
+    public String getStartFormatted() { return SleepSession.TIME_FORMAT.format(getStart()); }
+
+    public String getEndFormatted() {
+        if(end == null) return null;
+        return SleepSession.TIME_FORMAT.format(end);
+    }
+
     public Duration getDuration() {
         Instant start = getStart(), end = getEnd();
         if(start != null && end != null) return Duration.between(start, end);
@@ -50,12 +59,13 @@ public class ExerciseSession {
     }
 
     public String getDescription() {
-        Instant start = getStart(), end = getEnd();
-        String desc = "Started at: " + start.toString();
+        String desc = "Started at: " + getStartFormatted();
 
-        if(end != null) {
-            desc += ", Ended at: " + end.toString();
-            desc += ", Duration: " + getDuration().toString();
+        if(getEnd() != null) {
+            long mins = getDuration().getSeconds() / 60;
+
+            desc += ", Ended at: " + getEndFormatted();
+            desc += ", Duration: " + (mins / 60) + "h, " + (mins % 60) + "m";
             desc += ", Calories: " + getCaloriesBurned();
             desc += ", Ave. Heart Rate: " + getAverageHeartRate();
         } else {

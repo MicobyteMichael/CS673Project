@@ -84,7 +84,9 @@ public class SleepingFragment extends Fragment {
                     public void run() {
                         getActivity().runOnUiThread(() -> {
                             long minutes = Duration.between(s.getStart(), Instant.now()).getSeconds() / 60;
-                            ((TextView) getActivity().findViewById(R.id.textViewDuration)).setText((minutes / 60) + " hours, " + (minutes % 60) + " minutes");
+
+                            TextView tv = getActivity().findViewById(R.id.textViewDuration);
+                            if(tv != null) tv.setText((minutes / 60) + " hours, " + (minutes % 60) + " minutes");
                         });
                     }
                 }, 0, 1000);

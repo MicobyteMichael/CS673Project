@@ -2,7 +2,7 @@ package com.example.healthapp.backend.exercise;
 
 public enum ExerciseType {
 
-    Jogging("Jogging at a fast pace", "distance", "miles", false);
+    Jogging("Running at a fast pace", "distance", "miles", false);
 
     private final String description;
     private final String measuredValueName, unitName;
