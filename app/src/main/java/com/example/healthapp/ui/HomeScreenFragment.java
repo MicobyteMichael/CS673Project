@@ -12,12 +12,17 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.example.healthapp.R;
+import com.example.healthapp.backend.foodanddrink.Meal;
+import com.example.healthapp.backend.foodanddrink.RESTTaskGetMeals;
 import com.example.healthapp.backend.goals.Goal;
 import com.example.healthapp.backend.goals.RESTTaskGetGoals;
 import com.example.healthapp.backend.goals.StepsGoal;
+import com.example.healthapp.backend.sleeptracking.RESTTaskGetSleep;
+import com.example.healthapp.backend.sleeptracking.SleepSession;
 import com.example.healthapp.ui.meals.SubmitMealFragment;
 import com.example.healthapp.ui.sleep.SleepingFragment;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
 public class HomeScreenFragment extends Fragment implements StepListener {
@@ -66,7 +71,27 @@ public class HomeScreenFragment extends Fragment implements StepListener {
 
                 onStepCountChanged(((MainActivity)getActivity()).getSteps());
             }
-        }, err -> msgGenerator.accept("Failed to synchronize!"));
+        }, err -> msgGenerator.accept("Failed to synchronize goals!"));
+
+        RESTTaskGetMeals.enqueue(meals -> {
+            int calories = 0;
+            for(Meal m : meals) calories += m.getCalories();
+
+            ((TextView)getActivity().findViewById(R.id.textViewMealCalories)).setText(String.valueOf(calories));
+        }, err -> msgGenerator.accept("Failed to synchronized meals!"));
+
+        RESTTaskGetSleep.enqueue(sleeps -> {
+            Duration d = Duration.ZERO;
+            for(SleepSession s : sleeps) {
+                Duration d2 = s.getDuration();
+                if(d2 != null) d = d.plus(d2);
+            }
+
+            float hours = d.getSeconds() / 60 / 60;
+            float hoursRounded = Math.round(hours * 10) / 10;
+
+            ((TextView)getActivity().findViewById(R.id.textViewSleepHours)).setText(String.valueOf(hoursRounded));
+        }, err -> msgGenerator.accept("Failed to synchronize sleep!"));
 
         getActivity().findViewById(R.id.buttonMainScreenAddMeal)    .setOnClickListener(v -> ((MainActivity)getActivity()).showFrag(SubmitMealFragment.class));
         getActivity().findViewById(R.id.buttonMainScreenRecordSleep).setOnClickListener(v -> SleepingFragment.startSleepSession(getActivity(), msgGenerator));
