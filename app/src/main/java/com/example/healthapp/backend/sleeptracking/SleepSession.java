@@ -8,6 +8,7 @@ import java.time.format.FormatStyle;
 import java.util.Locale;
 
 public class SleepSession {
+    public static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
 
     private final String name;
     private final Instant start, end;
@@ -40,18 +41,21 @@ public class SleepSession {
         else return -1;
     }
 
+    public String getStartFormatted() { return TIME_FORMAT.format(getStart()); }
+
+    public String getEndFormatted() {
+        if(end == null) return null;
+        return TIME_FORMAT.format(end);
+    }
+
     public String getDescription() {
-        Instant start = getStart(), end = getEnd();
-        Duration dur = getDuration();
+        String desc = "Started at " + getStartFormatted();
 
-        DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
-        String desc = "Started at " + fmt.format(start);
-
-        if(end != null) {
-            float hours = dur.getSeconds() / 60F / 60F;
+        if(getEnd() != null) {
+            float hours = getDuration().getSeconds() / 60F / 60F;
             float hoursRounded = Math.round(hours * 10) / 10F;
 
-            desc += (", Ended at " + fmt.format(end));
+            desc += (", Ended at " + getEndFormatted());
             desc += (", Duration: " + hoursRounded + " hours");
         }
 

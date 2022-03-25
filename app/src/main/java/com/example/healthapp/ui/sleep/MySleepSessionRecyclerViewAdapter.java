@@ -39,7 +39,7 @@ public class MySleepSessionRecyclerViewAdapter extends RecyclerView.Adapter<MySl
 
         if(s.getEnd() == null) {
             holder.end.setVisibility(View.VISIBLE);
-            holder.end.setOnClickListener(v -> SleepingFragment.endSleepSession(s.getName(), msgGenerator));
+            holder.end.setOnClickListener(v -> SleepingFragment.endSleepSession(s.getName(), msgGenerator, refresh));
         } else {
             holder.end.setVisibility(View.GONE);
             holder.end.setOnClickListener(v -> {});
