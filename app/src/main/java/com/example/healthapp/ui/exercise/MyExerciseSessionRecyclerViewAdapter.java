@@ -37,7 +37,7 @@ public class MyExerciseSessionRecyclerViewAdapter extends RecyclerView.Adapter<M
         ExerciseSession s = mValues[position];
 
         holder.mItem = s;
-        holder.mIdView.setText("Session Name: " + s.getName());
+        holder.mIdView.setText("Session Name: " + s.getName() + ", doing: " + s.getExerciseType().name());
         holder.mContentView.setText(s.getDescription());
 
         if(s.getEnd() == null) {
