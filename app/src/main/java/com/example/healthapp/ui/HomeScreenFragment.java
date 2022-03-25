@@ -97,9 +97,9 @@ public class HomeScreenFragment extends Fragment implements StepListener {
 
         getActivity().findViewById(R.id.buttonMainScreenAddMeal)    .setOnClickListener(v -> ((MainActivity)getActivity()).showFrag(SubmitMealFragment.class));
         getActivity().findViewById(R.id.buttonMainScreenRecordSleep).setOnClickListener(v -> SleepingFragment.startSleepSession(getActivity(), msgGenerator));
-        getActivity().findViewById(R.id.mainScreenStartRunning)     .setOnClickListener(v -> ExercisingFragment.startExerciseSession(ExerciseType.Jogging, getActivity(), msgGenerator));
-        getActivity().findViewById(R.id.mainScreenStartSwimming)    .setOnClickListener(v -> { System.out.println("swim!!"); });
-        getActivity().findViewById(R.id.mainScreenStartCycling)     .setOnClickListener(v -> { System.out.println("bike!!"); });
+        getActivity().findViewById(R.id.mainScreenStartRunning)     .setOnClickListener(v -> ExercisingFragment.startExerciseSession(ExerciseType.Jogging,  getActivity(), msgGenerator));
+        getActivity().findViewById(R.id.mainScreenStartSwimming)    .setOnClickListener(v -> ExercisingFragment.startExerciseSession(ExerciseType.Swimming, getActivity(), msgGenerator));
+        getActivity().findViewById(R.id.mainScreenStartCycling)     .setOnClickListener(v -> ExercisingFragment.startExerciseSession(ExerciseType.Cycling,  getActivity(), msgGenerator));
     }
 
     @Override
